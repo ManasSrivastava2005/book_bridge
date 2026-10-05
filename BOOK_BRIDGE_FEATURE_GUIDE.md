@@ -1,0 +1,477 @@
+# Book Bridge — Complete Feature Guide
+
+A practical explanation of the current application
+
+Prepared: 28 September 2026
+Project: C:\Backend\bookbbbb
+
+This guide describes implemented features and their current behavior. It combines the original library features with the completed librarian and student phases. Older phase reports may say a feature was deferred; this guide reflects the later student implementation where those features were added. Passwords and API keys are deliberately excluded.
+
+## Contents
+
+1. What Book Bridge does
+2. Accounts, login and library membership
+3. Student dashboard
+4. Finding and borrowing books
+5. Digital library and PDF reader
+6. Notes and question banks
+7. AI Assistant and Book Summarizer
+8. Study Together
+9. Academic profile and curriculum
+10. Exams, Academic Plan and learning path
+11. Recommendations
+12. Chapter quizzes
+13. XP, reader levels, streaks and badges
+14. Leaderboard and daily missions
+15. Contributions and profile
+16. Librarian/admin features
+17. Notifications and permissions
+18. Example workflows
+19. Technology, verification and limitations
+20. Quick page directory
+
+## 1. What Book Bridge does
+
+Book Bridge brings physical library management, digital study resources and student learning progress into one application. Students can find books, use notes and PDFs, plan study around exams, complete quizzes and track reading progress. Librarians manage inventory, circulation, published resources, curriculum, quizzes, student submissions and announcements.
+
+The application has two main portals:
+
+| Portal | Intended users | Main purpose |
+| --- | --- | --- |
+| Student | Registered students | Reading, borrowing, study planning and learning progress |
+| Librarian/admin | Authorized staff | Library operations, academic content and moderation |
+
+The current installation runs locally on this computer. It is not a publicly hosted website.
+
+## 2. Accounts, login and library membership
+
+### Student registration and login
+
+Students register through four steps: Account, Academic Information, Curriculum/Subjects, and Optional Goals. Academic setup can be skipped so missing curriculum details do not block registration. Exam dates can be added after registration.
+
+Student login: http://127.0.0.1:5173/login
+Registration: http://127.0.0.1:5173/register
+
+### Librarian login
+
+Staff use the separate login at http://127.0.0.1:5173/librarian/login. A valid librarian or admin account opens the staff dashboard. An ordinary student account cannot gain staff access by opening the staff URL.
+
+### How library membership works
+
+A user's library membership links the account to an existing library record. Staff assign or remove that membership. Students cannot assign themselves to a library through profile editing.
+
+These identifiers are different:
+
+- Student ID identifies the student's academic account information.
+- Library membership identifies the library associated with the account.
+- Internal database IDs link records inside the system; they are not passwords or student-facing membership credentials.
+
+Signing in does not automatically create a library membership. The staff assignment is the authoritative record.
+
+## 3. Student dashboard
+
+The dashboard brings together current account progress and shortcuts:
+
+- Reader level, lifetime XP and progress toward completing the current level.
+- Reading streak, active borrowing and other recorded library statistics.
+- Daily missions based on actual backend events.
+- Recent recorded activity.
+- Curriculum-based learning path and recommended books.
+- Earned badges and learning statistics.
+- A compact library AI Assistant.
+
+Sample activities and fabricated reading totals have been removed. An account without activity should show zero or an empty state. A loading failure is not evidence that progress was erased.
+
+The profile's Books Read metric uses distinct returned book titles as a practical proxy. Returning a book does not prove that every page was read. Verified PDF reading time is measured separately.
+
+## 4. Finding and borrowing books
+
+### Book catalogue and search
+
+Students can browse physical books, search/filter the catalogue and open book details. Records provide available metadata such as title, author, category, inventory availability and shelf/rack location.
+
+Unified search searches across physical books, digital resources, published notes and question banks. This helps a student searching for a subject find several kinds of material instead of checking each library section separately.
+
+### Borrowing, returns and reservations
+
+Loans connect a student to a book and retain circulation status/history. The My Books page helps students follow their borrowing activity. Reservations support demand for books; staff circulation screens handle library operations.
+
+Renewals extend eligible loans according to the configured rules. The system records renewal history and protects against duplicate retries and stale updates. A renewal is subject to policy and availability rather than being an unlimited extension.
+
+There is no implemented fines/payment system in the delivered circulation scope.
+
+### Reviews and ratings
+
+Students can submit book reviews and ratings. Aggregate ratings and counts use stored reviews. A book with no reviews must not receive invented stars or review totals. The existing review behavior supports updating a user's review instead of creating repeated duplicates.
+
+### QR lookup
+
+A student can scan a supported book QR code to find the corresponding book, location and availability. Staff generate and manage codes. QR scanning identifies a book; it does not automatically grant borrowing permission.
+
+## 5. Digital library and PDF reader
+
+The Digital Resources section provides published electronic resources. Managed PDF files can open in the integrated reader; external resources depend on their source being available.
+
+Reader tools include:
+
+- Page navigation and saved reading position.
+- Zoom/fit-width controls.
+- Light, sepia and dark reading themes.
+- Chapter navigation when the PDF contains an outline.
+- Page bookmarks with notes.
+- Text highlights with associated notes.
+- Opening the original document when needed.
+- Saved reader state associated with the signed-in user and resource.
+
+If the underlying PDF changes, the reader preserves existing annotations and can pause editing to avoid placing old highlights on the wrong text. The reader also supports importing compatible older browser bookmarks without overwriting existing server notes.
+
+Current limits include up to 200 bookmarks and 200 highlights per reader state. Text selection and extraction depend on the PDF containing usable text.
+
+Only server-verifiable, library-uploaded PDFs qualify for reading rewards. Merely opening a PDF, skipping rapidly through pages or leaving an inactive tab open does not automatically earn reading XP.
+
+## 6. Notes and question banks
+
+### Published study notes
+
+Students can browse the published notes library, use available academic filters and open/download suitable material. Staff manage published resources.
+
+### Uploading your own notes
+
+The notes library also supports personal uploads. These are owner-scoped study files, separate from material published for the wider library. Uploading a personal note does not itself earn contribution XP.
+
+### Submitting notes for the library
+
+To share material through the official review process, use My Contributions or the notes page's submission link. The file enters a private pending queue. A librarian reviews it before publication and contribution rewards.
+
+### Question banks and previous papers
+
+The question resources section provides stored question banks/papers with the available subject and academic metadata. These resources are distinct from interactive chapter quizzes: downloading a question bank does not create a scored quiz attempt or award quiz XP.
+
+## 7. AI Assistant and Book Summarizer
+
+### Library AI Assistant
+
+The Assistant helps locate relevant physical books, digital resources, notes and question banks. Its current chat endpoint uses catalog-aware matching and response rules grounded in stored resources. It should not be described as an unrestricted general-purpose chatbot or a trained personalized tutor.
+
+For example, a request about where to find a known title can use that book's stored location information. If the service fails, the dashboard reports that it is unavailable rather than inventing shelf locations.
+
+### Local Book Summarizer
+
+The Book Summarizer is available within the AI page. It accepts pasted text or a supported PDF/TXT upload and produces a summary with the selected style.
+
+| Mode | Intended output |
+| --- | --- |
+| short | A brief overview of the main ideas |
+| detailed | A fuller explanation of the source material |
+| key_points | The important points in a concise list |
+| exam_notes | Revision-oriented notes for studying |
+| simple | A simpler explanation of the material |
+
+The active summarization provider is local FLAN-T5 Base. It loads lazily, reuses the loaded model and serializes inference to reduce simultaneous memory pressure. Inference uses torch.inference_mode().
+
+Long text uses token-aware chunks followed by hierarchical consolidation: document → chunks → chunk summaries → consolidated summary. Configured input/chunk limits are enforced; the feature is not an unlimited-length book processor. It is designed not to silently discard the rest of a book.
+
+Copy and Download Summary actions are available. Student Save to Notes is deliberately not implemented. Older Gemini/OpenAI provider code remains available in the project, but cloud fallback is disabled for this summarization flow. No training or fine-tuning was performed.
+
+Local CPU processing can be slow, especially for the first request and long PDFs. Scanned/image-only PDFs may not yield usable text. Generated summaries can omit detail or make mistakes, so important technical facts should be checked against the source.
+
+## 8. Study Together
+
+Study Together provides study rooms and persisted discussion activity. Supported operations include finding/creating rooms, joining/leaving, reading and posting messages, sharing supported attachments, and archiving rooms under the applicable permissions.
+
+Room access rules protect membership and invitation-based access. Students can report inappropriate messages. Moderation controls include message/attachment handling, report resolution and audit records. Rate limits help reduce repeated automated activity.
+
+This is a room/discussion feature. It is not presented as a video-call or live screen-sharing system.
+
+## 9. Academic profile and curriculum
+
+The academic profile supports college/university, program, branch, specialization, semester, curriculum, selected subjects, custom subjects and goals. Optional fields preserve compatibility with existing accounts.
+
+Librarians define structured curricula:
+
+Curriculum → Subject → Unit → Topic → Mapped resources
+
+Students select an available curriculum and subjects, view units/topics, mark topics complete and follow mapped books or resources. Subject progress is based on completed topics divided by total topics. Selecting a subject also synchronizes enrollment used by related academic features.
+
+Custom subjects are useful when a subject is not yet in the staff curriculum. They can have exam dates, but automatic topic-based planning needs an actual structured syllabus. The application does not fabricate missing topics.
+
+## 10. Exams, Academic Plan and learning path
+
+### Exam dates
+
+Students can add, edit and delete their own exams with subject, name, type and date. Supported types are CAT-I, CAT-II, Midterm, End Semester, Practical and Custom. Exams persist in PostgreSQL and are private to their owner. Past exam records can remain stored; upcoming scheduling uses future/current relevant dates.
+
+### My Academic Plan
+
+The plan combines selected curriculum topics, completion, mapped resources, exam deadlines, saved reading position and published quizzes. It shows the next exam, study tasks, subject progress, upcoming exams and links to learning paths/recommendations.
+
+Typical tasks include reading/practice, revision and quizzes. The user selects a daily study-time budget. Estimates allocate remaining work within that budget. Without an exam deadline, the planner uses a rolling seven-day window.
+
+When a student returns after missing work, remaining tasks are recalculated; completed work is preserved. If the remaining syllabus cannot fit, tasks can remain unscheduled with an explicit workload warning. The system does not pretend an impossible schedule is achievable.
+
+Topic/study completion is self-reported. It is different from validated reading XP. Quiz tasks require a stored quiz attempt and cannot simply be checked off as completed.
+
+### Dynamic learning path
+
+The learning path follows the student's selected subjects, units and topics, with completed/next/upcoming states and exam priority. It replaces the old fixed demonstration sequence as the primary path. It does not invent prerequisite relationships that were never stored.
+
+## 11. How recommendations work
+
+Recommendations use an explainable rule-based score, not a trained machine-learning model.
+
+| Signal | Maximum points | Meaning |
+| --- | ---: | --- |
+| Curriculum relevance | 40 | Book mapped to relevant unfinished curriculum; completed-topic revision can receive 20 |
+| Exam urgency | 25 | More priority for a relevant exam approaching within the scoring window |
+| Reading/history relevance | 15 | Match with categories from borrowing history |
+| Availability | 10 | Copies currently available |
+| Rating | 10 | Real stored average rating, scaled from five stars |
+
+Example: a book relevant to an unfinished topic, with history relevance, available copies and a real 4/5 rating receives 40 + 15 + 10 + 8 = 73 points before any exam-urgency contribution.
+
+Each result explains why it was recommended. The score is relevance out of 100, not a probability that the student will like the book. No reviews means zero rating contribution, not a fake fallback rating.
+
+## 12. Chapter quizzes
+
+Librarians create and publish chapter/topic quizzes with exactly ten valid multiple-choice questions. The source permission must be recorded; an ISBN alone is not treated as access to copyrighted chapters.
+
+Student flow:
+
+1. Choose a published quiz by book/subject/chapter/topic.
+2. Start or resume an unfinished attempt.
+3. Answer all ten questions.
+4. Submit for server-side scoring.
+5. View the score and answer review.
+6. Revisit stored attempts.
+
+The attempt saves a snapshot of its questions and academic context. Correct answers remain hidden until submission. Repeating the same submission does not duplicate the reward; changing an already submitted answer set is rejected. Completing a valid quiz awards +25 XP at most once per UTC day, regardless of how many quizzes are completed that day.
+
+## 13. XP, reader levels, streaks and badges
+
+### XP rewards
+
+| Event | XP | Limit/condition |
+| --- | ---: | --- |
+| Successful daily login | 25 | Once per UTC calendar day |
+| Meaningful reading | 25 | Ten validated pages OR 15 validated minutes; once per day |
+| Completed chapter quiz | 25 | Valid persisted submission; once per day |
+| Reading streak continuation | 25 | Qualifying reading following a qualifying previous day; once per day |
+| Approved contribution | 2 | Once per approved submission |
+
+The first four can total 100 daily XP if all conditions are met, plus approved contribution rewards. The first qualifying reading day starts a streak but is not a continuation of a previous qualifying day. Reusing an existing login session does not itself count as a new successful daily login.
+
+The server records XP events and prevents duplicates with unique event keys. The frontend cannot select an XP amount. XP history shows the event description, amount and time. Daily missions and badges do not add an extra reward on top of the same event.
+
+### Fifty reader levels
+
+Completing level L requires 200 × L XP. Levels use cumulative lifetime XP.
+
+| Level | Lifetime XP needed to enter | XP to complete that level |
+| --- | ---: | ---: |
+| 1 | 0 | 200 |
+| 2 | 200 | 400 |
+| 3 | 600 | 600 |
+| 4 | 1,200 | 800 |
+| 5 | 2,000 | 1,000 |
+| 50 | 245,000 | 10,000 |
+
+Example: with 700 lifetime XP, a student is in level 3 with 100 of its 600 XP completed. Level 50 completes at 255,000 XP; lifetime XP may keep increasing afterward.
+
+Milestone titles are New Reader, Bronze Reader at 5, Silver Scholar at 10, Gold Scholar at 20, Knowledge Master at 35 and Book Bridge Legend at 50. Level milestones come from XP, not a manual button.
+
+### Reading streaks
+
+A qualifying day requires ten pages OR fifteen minutes of meaningful reading. The server validates heartbeat timing and page bounds. Browser visibility, focus and recent activity help prevent obvious idle farming. Same-day duplicate pages are not repeatedly counted, and parallel active sessions are restricted.
+
+Current streak measures the ongoing chain; longest streak is the best recorded chain. A gap breaks the current chain without deleting the longest record. Daily boundaries use UTC. This tracking is an activity signal, not proof of comprehension.
+
+### Automatic badge unlocks
+
+| Category | Badge and requirement |
+| --- | --- |
+| Borrowing | First Borrow: 1 distinct title; Book Explorer: 5; Bibliophile: 10; Scholar: 25; Library Legend: 50 |
+| Streak | 3-Day, 7-Day, 14-Day, 30-Day and 100-Day Streak |
+| Quiz | Quiz Starter: first distinct quiz; Sharp Mind: at least 80% on five distinct quizzes; Perfect Chapter: a 100% score; Quiz Scholar: twenty distinct quizzes |
+| Contribution | Contributor: first approval; Exam Helper: first approved question paper; Knowledge Sharer: five approvals; Community Scholar: twenty approvals |
+| Curriculum | Path Finder: selected subject; Quarter Master: 25% subject progress; Halfway There: 50%; Subject Master: 100%; Exam Ready: completed subject with upcoming exam |
+| Level | Bronze Reader: 5; Silver Scholar: 10; Gold Scholar: 20; Knowledge Master: 35; Book Bridge Legend: 50 |
+
+Badges are earned only when an ownership record exists. Checks are repeat-safe and do not award the same badge repeatedly. Earned badges remain earned. Legacy definitions without a new automatic rule are not falsely unlocked.
+
+## 14. Leaderboard and daily missions
+
+### Leaderboard
+
+Rankings come from students' recorded XP. Weekly ranking uses the UTC week starting Monday; monthly uses the UTC calendar month; all-time uses the full ledger. The displayed level still reflects lifetime XP even when ranking by weekly earnings.
+
+Students can filter All, My Branch and My Semester when the relevant academic data exists. The screen highlights the signed-in student and can show their own rank outside the visible results. Rows include display name/avatar, level, XP and reading metrics without exposing email addresses or internal IDs. Ties use a stable internal ordering.
+
+### Daily missions
+
+Read Today, Complete Chapter Quiz, Maintain Reading Streak and Academic Task derive their completion from stored backend activity. The checkboxes are display-only. Clicking a mission cannot create XP. Academic-task completion represents saved study progress and does not issue an extra XP reward.
+
+## 15. Contributions and profile
+
+### Student contributions
+
+Supported submission kinds: Notes, Past Question Papers, Question Banks and Study Materials. The form includes title, subject and applicable academic metadata such as course code, semester, branch, exam type, year and college. PDF/TXT submissions are limited to 25 MB and validated.
+
+Workflow: Upload → Pending → Librarian review → Approved or Rejected.
+
+Pending files remain private. The student can see their own status and rejection reason, and access their own uploaded file. Approval publishes through the appropriate resource workflow and grants +2 XP once. A retry key prevents an interrupted request from creating duplicate submissions.
+
+### Professional profile
+
+Profile brings together personal information/avatar, academic setup, real reader level/XP, XP history, current and longest streaks, reading time, returned-title count, quiz count/average, approved contributions, badges, subject progress, exam management and Academic Plan shortcuts.
+
+A missing Student ID is shown honestly instead of substituting a sample ID. Profile notification switches should not be interpreted as a new automated notification scheduler; that broader behavior is outside the delivered student scope.
+
+## 16. Librarian/admin features
+
+### Operations dashboard
+
+Staff see actual inventory, circulation, student and pending contribution counts, plus recently added books. It is an operational overview using stored data.
+
+### Book inventory
+
+Staff create/update book metadata and inventory, search/filter/page through records and manage locations. Deletion/copy changes have protections for active loans, held copies and referenced records so ordinary edits do not silently break history.
+
+### Circulation
+
+Staff handle issue/return/reservation workflows and eligible renewals with renewal history. Duplicate retries and stale updates are protected. Fines and payment collection are not included.
+
+### Digital resource management
+
+Staff manage electronic resource records and uploaded files/publication. Notes, question banks or PDFs referenced by curriculum/history have deletion protections; a blocked deletion preserves the record/file instead of breaking related data.
+
+### Contribution moderation
+
+Staff inspect pending private submissions, approve or reject with a reason, and retain an audit trail. Approval coordinates publication, notification and exactly-once +2 XP. Students cannot approve their own submissions.
+
+### Curriculum management
+
+Staff create curriculum metadata and subject/unit/topic trees, map books and resources, manage enrollment, duplicate a curriculum version and archive it. Students consume this structure rather than maintaining a second hardcoded syllabus.
+
+### Quiz management
+
+Staff draft/edit quizzes, record source permission and answers/explanations, validate ten questions, publish or deactivate. Students see only quizzes eligible for student access.
+
+### Announcements
+
+Staff draft announcements, preview the audience and send to all students, a branch, semester, selected subject or individual. Duplicate-send protection prevents repeated delivery from retries. Delivery is through in-app notifications, not email.
+
+### Student administration
+
+Staff manage supported student administration and library membership assignment/removal. Membership changes are controlled by staff permissions, not student-editable profile fields.
+
+### Analytics
+
+Staff analytics include real circulation/demand/contribution aggregates and recorded resource download requests. A request counter does not prove the user completed a download. Older counters and unavailable historical metrics are not converted into invented history.
+
+Student reading time and quiz scores are now recorded for student features; that does not mean every older staff analytics panel has been expanded to report them. Some legacy staff analytics labels remain limited to the earlier staff reporting scope.
+
+### QR management
+
+Staff generate book codes, manage their mapping, preview/download PNG codes and use print layouts. Lookup provides the mapped book, location and current availability. Physical camera permission/device behavior and actual printer output require device testing.
+
+### Study moderation
+
+Staff review reported study-room activity, resolve reports and inspect audit information. Permission checks control moderation actions.
+
+## 17. Notifications and permissions
+
+Students have an in-app notification inbox for supported events and staff announcements. Notifications are separate from external email/SMS delivery.
+
+JWT authentication identifies the signed-in user. Staff roles are checked against database records. Owner-scoped APIs protect personal notes, reading state, attempts, plans, exams and pending contributions. Passwords are stored as hashes. These controls are implemented application behavior, not a claim of a complete independent security audit.
+
+## 18. Example workflows
+
+### A student's normal study day
+
+1. Sign in and receive the daily login reward if not already earned that UTC day.
+2. Open Academic Plan and check the nearest exam and unfinished tasks.
+3. Open a mapped library PDF and read meaningfully.
+4. Reach the reading threshold to earn the reading reward; an eligible continuing streak earns its reward too.
+5. Complete a published ten-question quiz and view the score.
+6. Mark studied curriculum topics complete and review updated progress.
+7. Check Profile/XP history to see recorded results.
+
+### Sharing useful notes
+
+1. Use personal upload if the file is only for your own study.
+2. Use My Contributions to submit it for the library.
+3. Wait while its status is Pending.
+4. A librarian reviews it and approves or rejects it.
+5. Approval earns +2 XP and makes the content available through the publishing workflow.
+
+### Preparing a subject for students
+
+1. Librarian adds relevant books/resources.
+2. Librarian creates a curriculum subject, units and topics.
+3. Librarian maps resources and publishes permitted quizzes.
+4. Student selects that curriculum/subject and adds an exam date.
+5. The plan, learning path and recommendations use the stored academic data.
+
+## 19. Technology, verification and limitations
+
+The frontend uses React, TypeScript, Vite and Tailwind. The backend uses FastAPI, SQLAlchemy and PostgreSQL. Local summarization uses FLAN-T5 Base through the dedicated local inference setup. Schemas were extended through additive migrations rather than resetting the library database.
+
+Recorded acceptance evidence includes 263 backend test executions across the final regression batches, TypeScript validation, a successful production frontend build, phase-specific student browser checks and twelve librarian screen checks. Shared tests are repeated across suites, so 263 is not a count of unique test scenarios. Detailed evidence is in STUDENT_COMPLETION_REPORT.md and LIBRARIAN_COMPLETION_REPORT.md.
+
+Important boundaries:
+
+- Services must run on this PC for localhost links to work; shutting down the PC stops them.
+- This has not been certified for production-scale concurrent traffic.
+- CPU summarization may be slow and generated text needs review.
+- No new model training/fine-tuning or fresh expensive FLAN-T5 benchmark was performed in the student pass.
+- The frontend build has a non-blocking bundle-size warning.
+- Reading activity cannot prove attention; topic completion is self-reported.
+- Daily reward boundaries are UTC, not automatically the user's local timezone.
+- Academic plans use estimates; the time-budget choice resets on page load.
+- There is no public deployment, fines/payment system, email announcement delivery or student Summary-to-Notes saving in this delivered scope.
+- Institution information uses text fields rather than a full institution-directory service.
+
+## 20. Quick page directory
+
+Use http://127.0.0.1:5173 before each frontend path below. Login and role permissions apply.
+
+| Student page | Path |
+| --- | --- |
+| Login / registration | /login /register |
+| Dashboard | /dashboard |
+| Books / loans | /books /my-books |
+| Digital resources | /resources |
+| Notes / question banks | /notes /question-banks |
+| AI Assistant / Book Summarizer | /ai |
+| Study Together | /study-together |
+| Curriculum | /curriculum |
+| Academic Plan | /academic-plan |
+| Learning path | /learning-path |
+| Recommendations | /recommendations |
+| Quizzes | /quizzes |
+| Contributions | /contributions |
+| Leaderboard | /leaderboard |
+| Notifications | /notifications |
+| Profile/settings | /settings |
+| QR scanner | /scan |
+
+| Staff page | Path |
+| --- | --- |
+| Staff login | /librarian/login |
+| Dashboard | /admin/dashboard |
+| Inventory | /admin/books |
+| Circulation | /admin/circulation |
+| Digital resources | /admin/resources |
+| Contributions | /admin/contributions |
+| Curriculum | /admin/curricula |
+| Quizzes | /admin/quizzes |
+| Announcements | /admin/announcements |
+| Analytics | /admin/analytics |
+| QR management/scanner | /admin/qr /admin/qr/scan |
+| Student administration | /admin/users |
+| Study moderation | /admin/study-moderation |
+
+Backend address: http://127.0.0.1:8000
+API documentation: http://127.0.0.1:8000/docs
+
+For implementation evidence, consult STUDENT_COMPLETION_REPORT.md, STUDENT_IMPLEMENTATION_REPORT.md, LIBRARIAN_COMPLETION_REPORT.md and LIBRARIAN_IMPLEMENTATION_REPORT.md. Historical reports describe their own completion dates; this guide includes the subsequent student features.

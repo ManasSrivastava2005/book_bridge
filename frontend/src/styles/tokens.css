@@ -1,0 +1,38 @@
+/* Book Bridge: semantic RGB tokens support Tailwind opacity modifiers. */
+:root {
+  color-scheme: dark;
+  --bb-canvas: 7 11 20;
+  --bb-sidebar: 9 17 31;
+  --bb-surface: 13 23 40;
+  --bb-elevated: 17 30 50;
+  --bb-input: 9 17 31;
+  --bb-border: 34 48 71;
+  --bb-border-strong: 71 91 119;
+  --bb-ink: 248 250 252;
+  --bb-secondary: 148 163 184;
+  --bb-muted: 100 116 139;
+  --bb-accent: 59 130 246;
+  --bb-action: 37 99 235;
+  --bb-action-hover: 29 78 216;
+  --bb-focus: 125 211 252;
+  --bb-cyan: 34 211 238;
+  --bb-success: 34 197 94;
+  --bb-warning: 245 158 11;
+  --bb-danger: 239 68 68;
+  --bb-danger-action: 185 28 28;
+  --bb-gold: 250 204 21;
+  --bb-radius-control: 8px;
+  --bb-radius-card: 12px;
+  --bb-radius-panel: 16px;
+  --bb-space-1: 4px;
+  --bb-space-2: 8px;
+  --bb-space-3: 12px;
+  --bb-space-4: 16px;
+  --bb-space-6: 24px;
+  --bb-space-8: 32px;
+  --bb-space-10: 40px;
+  --bb-space-12: 48px;
+  --bb-shadow-card: 0 2px 8px rgb(0 0 0 / .12);
+  --bb-shadow-popover: 0 16px 40px rgb(0 0 0 / .32);
+  --bb-duration: 180ms;
+}

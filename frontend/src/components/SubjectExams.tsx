@@ -1,0 +1,22 @@
+import { useState } from 'react';
+import api from '../services/api';
+import { libraryError } from '../utils/library';
+import type { Subject } from '../pages/student/CurriculumPage';
+export type CurriculumExam={id:number;subject_id:number|null;subject:string;name:string;exam_type:string;date:string;topic_ids:number[]|null};
+const field='block w-full mt-1 rounded-lg border border-slate-700 bg-slate-900 p-2 text-white';
+export default function SubjectExams({subject,exams,onSaved}:{subject:Subject;exams:CurriculumExam[];onSaved:()=>Promise<void>}){
+ const [editing,setEditing]=useState<number|null>(null),[open,setOpen]=useState(false),[name,setName]=useState(''),[date,setDate]=useState(''),[type,setType]=useState('CAT-II'),[ids,setIds]=useState<number[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const topicIds=subject.units.flatMap(u=>u.topics.map(t=>t.id));
+ const reset=()=>{setEditing(null);setName('');setDate('');setType('CAT-II');setIds([]);setOpen(false);};
+ const toggle=(values:number[],checked:boolean)=>setIds(old=>checked?[...new Set([...old,...values])]:old.filter(i=>!values.includes(i)));
+ return <section className="space-y-4"><div className="flex items-center justify-between gap-3"><h3 className="font-semibold text-white">Exams & covered syllabus</h3><button className="text-blue-300 text-sm" onClick={()=>{reset();setOpen(true);}}>+ Add exam</button></div>
+ {error&&<p role="alert" className="text-red-300">{error}</p>}
+ {!exams.length&&<p className="text-sm text-slate-400">Add CAT-I, CAT-II or another exam. Each exam has its own date and selected topics.</p>}
+ <div className="grid sm:grid-cols-2 gap-3">{exams.map(exam=><article key={exam.id} className="rounded-xl border border-slate-700 bg-slate-900/50 p-4"><h4 className="font-medium text-white">{exam.name}</h4><p className="text-sm text-slate-400">{exam.date} · {exam.topic_ids?.filter(id=>topicIds.includes(id)).length||0} covered topics</p>{(!exam.topic_ids?.length||exam.topic_ids.some(id=>!topicIds.includes(id)))&&<p className="mt-2 text-xs text-amber-200">Review topic coverage. Missing or removed topics are not scheduled.</p>}<button className="text-sm text-blue-300 mt-3" onClick={()=>{setEditing(exam.id);setName(exam.name);setDate(exam.date);setType(exam.exam_type);setIds(exam.topic_ids?.filter(id=>topicIds.includes(id))||[]);setOpen(true);}}>Edit {exam.name}</button></article>)}</div>
+ {open&&<form className="rounded-xl border border-blue-500/30 p-4 space-y-4" onSubmit={async e=>{e.preventDefault();setBusy(true);setError('');try{const payload={subject_id:subject.id,name,date,exam_type:type,topic_ids:ids};if(editing)await api.put(`/academic/exams/${editing}`,payload);else await api.post('/academic/exams',payload);reset();await onSaved();}catch(e){setError(libraryError(e,'Could not save exam.'));}finally{setBusy(false);}}}>
+ <fieldset disabled={busy} className="space-y-4"><div className="grid sm:grid-cols-3 gap-3 text-sm text-slate-300"><label>Exam name<input className={field} required maxLength={150} value={name} onChange={e=>setName(e.target.value)}/></label><label>Exam date<input type="date" className={field} required value={date} onChange={e=>setDate(e.target.value)}/></label><label>Exam type<select className={field} value={type} onChange={e=>setType(e.target.value)}>{['CAT-I','CAT-II','Midterm','End Semester','Practical','Custom'].map(t=><option key={t}>{t}</option>)}</select></label></div>
+ <p className="text-sm text-slate-400">Select included units or individual topics. You can save the exam now and add coverage after confirming your PDF.</p>
+ {subject.units.map(unit=><div key={unit.id} className="space-y-2"><label className="flex gap-2 text-blue-200 text-sm"><input type="checkbox" disabled={!unit.topics.length} checked={!!unit.topics.length&&unit.topics.every(t=>ids.includes(t.id))} onChange={e=>toggle(unit.topics.map(t=>t.id),e.target.checked)}/>Include unit: {unit.title}</label><div className="pl-5 grid sm:grid-cols-2 gap-2">{unit.topics.map(t=><label key={t.id} className="flex gap-2 text-sm text-slate-300"><input type="checkbox" checked={ids.includes(t.id)} onChange={e=>toggle([t.id],e.target.checked)}/>Include {t.title}</label>)}</div></div>)}
+ <div className="flex gap-4"><button className="bg-blue-600 text-white rounded-lg px-4 py-2">{busy?'Saving…':'Save exam'}</button><button type="button" className="text-slate-300" onClick={reset}>Cancel</button></div></fieldset></form>}
+ </section>;
+}

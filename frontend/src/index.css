@@ -1,0 +1,89 @@
+@import './styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background-color: rgb(var(--bb-canvas));
+  color: rgb(var(--bb-ink));
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
+}
+
+@layer components {
+  /* Opt-in primitives preserve the native element, refs, events and form semantics. */
+  .bb-panel { @apply rounded-panel border border-line bg-surface shadow-card; }
+  .bb-title { @apply text-page-title text-ink; }
+  .bb-section-title { @apply text-section-title text-ink; }
+  .bb-card-title { @apply text-card-title text-ink; }
+  .bb-meta { @apply text-meta text-secondary; }
+  .bb-label { @apply text-body font-medium text-ink; }
+  .bb-button {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-control border px-4 py-2 text-body font-medium;
+    transition: background-color var(--bb-duration), border-color var(--bb-duration), color var(--bb-duration), box-shadow var(--bb-duration);
+  }
+  .bb-button:disabled { cursor: not-allowed; opacity: .5; }
+  .bb-button-primary { @apply border-transparent bg-action text-white; }
+  .bb-button-primary:hover:not(:disabled) { @apply bg-action-hover; }
+  .bb-button-secondary { @apply border-line-strong bg-elevated text-ink; }
+  .bb-button-secondary:hover:not(:disabled) { @apply border-accent/60 bg-accent/10; }
+  .bb-button-ghost { @apply border-transparent bg-transparent text-secondary; }
+  .bb-button-ghost:hover:not(:disabled) { @apply bg-elevated text-ink; }
+  .bb-button-danger { border-color: transparent; background: rgb(var(--bb-danger-action)); color: white; }
+  .bb-button-danger:hover:not(:disabled) { background: #991b1b; }
+  .bb-icon-button { @apply inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-control text-secondary hover:bg-elevated hover:text-ink; }
+  .bb-field {
+    @apply min-h-11 w-full min-w-0 rounded-control border border-line-strong bg-field px-3 py-2.5 text-body text-ink placeholder:text-secondary;
+    transition: border-color var(--bb-duration), box-shadow var(--bb-duration);
+  }
+  .bb-field:focus { border-color: rgb(var(--bb-accent)); }
+  .bb-field:disabled { opacity: .55; cursor: not-allowed; }
+  .bb-error { @apply rounded-card border border-red-400/30 bg-red-400/10 p-4 text-body text-red-200; }
+  .bb-notice { @apply rounded-card border border-accent/30 bg-accent/10 p-4 text-body text-blue-200; }
+  .bb-empty { @apply rounded-card border border-dashed border-line-strong px-6 py-8 text-center text-body text-secondary; }
+  .bb-progress { @apply block h-2 w-full overflow-hidden rounded-full border-0 bg-elevated; appearance: none; }
+  .bb-progress::-webkit-progress-bar { background: rgb(var(--bb-elevated)); border-radius: 999px; }
+  .bb-progress::-webkit-progress-value { background: rgb(var(--bb-accent)); border-radius: 999px; }
+  .bb-progress::-moz-progress-bar { background: rgb(var(--bb-accent)); border-radius: 999px; }
+  .bb-loading { @apply space-y-3 text-body text-secondary; }
+  .bb-loading::after { content: ''; display: block; width: min(100%, 24rem); height: 6px; margin-top: 12px; border-radius: 999px; background: linear-gradient(90deg, rgb(var(--bb-border)), rgb(var(--bb-elevated)), rgb(var(--bb-border))); background-size: 200% 100%; animation: bb-loading 1.8s ease-in-out infinite; }
+  .bb-table { @apply w-full text-left text-body; }
+  .bb-table th { @apply border-b border-line bg-elevated px-4 py-3 text-meta font-medium text-secondary; }
+  .bb-table td { @apply border-b border-line px-4 py-4 align-top; }
+  .bb-table tbody tr:hover { background: rgb(var(--bb-accent) / .04); }
+}
+
+/* Outranks existing focus:outline-none utilities without changing pointer focus. */
+:root body :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid rgb(var(--bb-focus));
+  outline-offset: 3px;
+}
+
+@keyframes bb-loading { to { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--bb-sidebar));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--bb-border-strong));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--bb-accent));
+}

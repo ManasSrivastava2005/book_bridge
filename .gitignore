@@ -1,0 +1,52 @@
+# Virtual environment
+venv/
+/models/
+ml-dependency-plan.json
+frontend/public/pdfjs/
+
+# Environment variables (secrets — NEVER commit this)
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE files
+.vscode/
+.idea/
+
+# Owner-authenticated personal documents
+private_uploads/
+
+# Local-only environments, dependencies and generated output
+.venv/
+node_modules/
+dist/
+dist-ssr/
+backups/
+output/
+tmp/
+benchmark_results/
+uploads/
+*.log
+*.tsbuildinfo
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets and database snapshots
+.env.*
+!.env.example
+*.pem
+*.key
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.backup
+v2-integration-fixture.json
+
+# Legacy local helpers containing embedded database credentials
+/db_inspect.py
+/fix_columns.py
+/run_migration.py

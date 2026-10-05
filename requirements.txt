@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+python-dotenv
+email-validator
+bcrypt==4.2.1
+python-jose[cryptography]
+python-multipart
+openai
+pypdf
+google-genai>=2.24.0,<3
+-r requirements-ml.txt
+
+Pillow

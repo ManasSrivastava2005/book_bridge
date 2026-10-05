@@ -1,0 +1,14 @@
+import json,subprocess,uuid,httpx
+import verification_v2_server as fixture
+from app.models.user import User,UserRole
+from app.models.contribution import Contribution,XPTransaction
+from app.services.auth import create_access_token
+with fixture.database.SessionLocal() as db:
+ staff=db.query(User).filter_by(role=UserRole.LIBRARIAN).first();student=db.query(User).filter_by(role=UserRole.STUDENT).first();token=create_access_token(staff.id,'librarian');student_token=create_access_token(student.id,'student')
+title='V2 moderation '+uuid.uuid4().hex[:8]
+r=httpx.post('http://127.0.0.1:8001/student/contributions',headers={'Authorization':'Bearer '+student_token},data={'request_key':str(uuid.uuid4()),'metadata':json.dumps({'title':title,'subject':'OS','kind':'question_bank','semester':1,'branch':'CS'})},files={'file':('fixture.txt',b'Original isolated academic test material.','text/plain')});r.raise_for_status();rid=r.json()['id']
+program="""await page.goto('http://127.0.0.1:5174/librarian/login');await page.evaluate(t=>localStorage.setItem('bookbridge_token',t),TOKEN);await page.goto('http://127.0.0.1:5174/admin/contributions');await page.getByLabel('Contribution type',{exact:true}).selectOption('question_bank');await page.getByLabel('Search submissions',{exact:true}).fill(TITLE);const card=page.locator('article').filter({hasText:TITLE});await card.getByRole('button',{name:'Preview',exact:true}).click();await page.getByText('Original isolated academic test material.',{exact:true}).waitFor();await card.getByRole('button',{name:'Reject',exact:true}).click();const disabled=await page.getByRole('button',{name:'Confirm decision',exact:true}).isDisabled();await page.getByLabel('Rejection reason (required)',{exact:true}).fill('Fixture rejected for verification.');await page.getByRole('button',{name:'Confirm decision',exact:true}).click();await page.getByText('Contribution rejected. No XP awarded.',{exact:true}).waitFor();await page.getByRole('button',{name:'REJECTED',exact:true}).click();await page.getByText('Reason: Fixture rejected for verification.',{exact:true}).waitFor();await page.evaluate(()=>localStorage.removeItem('bookbridge_token'));return {kindAndSearch:true,privatePreview:true,requiredReason:disabled,rejectionPersisted:true};""".replace('TOKEN',json.dumps(token)).replace('TITLE',json.dumps(title))
+r=subprocess.run([r'C:\Users\manas\AppData\Roaming\npm\webcmd.cmd','--profile','bookbridge-release','--session','v2-staff-verification-4h','browser','run','--stdin','--no-snapshot-diff','--timeout','40','-f','json'],input=program,text=True,capture_output=True,encoding='utf-8',timeout=50);print(r.stdout);print(r.stderr)
+with fixture.database.SessionLocal() as db:
+ row=db.get(Contribution,rid);assert row.status=='REJECTED';assert db.query(XPTransaction).filter_by(event_key=f'contribution:{rid}:approved').count()==0
+ print('Isolated database confirms rejection and no contribution XP.')

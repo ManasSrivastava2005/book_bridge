@@ -1,0 +1,23 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const ts = require('./frontend/node_modules/typescript');
+const source = fs.readFileSync('frontend/src/services/session.ts', 'utf8');
+const compiled = ts.transpileModule(source, {compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
+const storage = () => {const data=new Map();return {getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k)};};
+const shared = storage();
+function tab(){const context={exports:{},sessionStorage:storage(),localStorage:shared};vm.runInNewContext(compiled,context);return context.exports;}
+shared.setItem('bookbridge_token','legacy-student');
+const student=tab(),staff=tab();
+assert.equal(student.getSessionToken(),'legacy-student');
+assert.equal(shared.getItem('bookbridge_token'),null);
+staff.saveSessionToken('staff-session');
+assert.equal(student.getSessionToken(),'legacy-student');
+assert.equal(staff.getSessionToken(),'staff-session');
+shared.setItem('bookbridge_token','old-client-staff-write');
+assert.equal(student.getSessionToken(),'legacy-student');
+staff.clearSessionToken();
+assert.equal(student.getSessionToken(),'legacy-student');
+assert.equal(staff.getSessionToken(),null);
+student.clearSessionToken();assert.equal(student.getSessionToken(),null);
+console.log('Session isolation: legacy adoption, independent student/staff sessions, old-client overwrite protection and tab-local logout passed.');
