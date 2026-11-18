@@ -103,7 +103,7 @@ export default function AIAssistantPage() {
             <h1 className="text-lg font-bold text-white flex items-center gap-2">
               Book Bridge AI Assistant <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-medium">Online</span>
             </h1>
-            <p className="text-xs text-gray-400">Library knowledge base • Textbook locator • Study companion</p>
+            <p className="text-xs text-secondary">Library knowledge base • Textbook locator • Study companion</p>
           </div>
         </div>
 
@@ -128,7 +128,7 @@ export default function AIAssistantPage() {
                 <span className="text-xs font-bold text-blue-400 group-hover:text-blue-300">{item.label}</span>
                 <ChevronRight className="w-3.5 h-3.5 text-gray-500 group-hover:text-white transition" />
               </div>
-              <p className="text-[11px] text-gray-400 mt-1 line-clamp-1">{item.prompt}</p>
+              <p className="text-[11px] text-secondary mt-1 line-clamp-1">{item.prompt}</p>
             </button>
           ))}
         </div>
@@ -186,7 +186,7 @@ export default function AIAssistantPage() {
             <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center">
               <Bot className="w-4 h-4" />
             </div>
-            <div className="bg-[#172033] border border-gray-800 rounded-2xl rounded-tl-none p-4 flex items-center gap-1.5">
+            <div className="bg-[#172033] border border-line rounded-2xl rounded-tl-none p-4 flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-blue-400 animate-bounce" />
               <div className="w-2 h-2 rounded-full bg-blue-400 animate-bounce [animation-delay:0.2s]" />
               <div className="w-2 h-2 rounded-full bg-blue-400 animate-bounce [animation-delay:0.4s]" />

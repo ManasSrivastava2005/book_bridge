@@ -4,8 +4,8 @@ import api from '../../services/api';
 import type { DigitalResource, Library } from '../../types';
 import { libraryError } from '../../utils/library';
 const blank=()=>({title:'',author:'',description:'',file_url:'',external_url:'',provider:'Book Bridge Campus',resource_type:'uploaded_pdf',access_type:'free',library_id:'',subject:'',category:'',license_name:'',license_url:'',cover_image:'',distribution_basis:'',rights_evidence:'',is_published:false,download_allowed:true});
-const field='w-full rounded-xl border border-gray-700 bg-[#172033] p-2 text-sm text-white';
-const button='rounded-xl border border-gray-700 bg-[#172033] px-3 py-2 text-sm text-gray-200 hover:bg-gray-700 disabled:opacity-40';
+const field='bb-field';
+const button='bb-button bb-button-secondary';
 export default function DigitalResourceManagementPage(){
  const [resources,setResources]=useState<DigitalResource[]>([]);
  const [libraries,setLibraries]=useState<Library[]>([]);
@@ -33,7 +33,7 @@ export default function DigitalResourceManagementPage(){
  const lifecycle=async(resource:DigitalResource,action:'publish'|'unpublish'|'archive'|'restore')=>{if(!window.confirm(`${action[0].toUpperCase()+action.slice(1)} “${resource.title}”?`))return;setBusy(true);setNotice('');setError('');try{await api.patch(`/admin/digital-resources/${resource.id}/lifecycle`,{action});setNotice('Publication status saved.');if(editing?.id===resource.id){setEditing(null);setForm(blank());}await load();}catch(e){setError(libraryError(e,'Could not change publication status.'));}finally{setBusy(false);}};
  const visible=resources.filter(r=>[r.title,r.author,r.provider].some(s=>s.toLowerCase().includes(search.toLowerCase())));
  return <div className="max-w-[1600px] mx-auto space-y-5 pb-10">
-  <header className="bg-[#111827] border border-gray-800 rounded-2xl p-5"><Link to="/admin/dashboard" className="text-cyan-400 text-sm">← Librarian Hub</Link><h1 className="text-2xl text-white font-bold mt-2">Manage digital resources</h1><p className="text-sm text-gray-400 mt-1">Upload authorized PDFs, record distribution rights, and manage publication.</p></header>
+  <header className="bg-[#111827] border border-gray-800 rounded-2xl p-5"><Link to="/admin/dashboard" className="text-cyan-400 text-sm">← Librarian Hub</Link><h1 className="bb-title mt-2">Manage digital resources</h1><p className="text-sm text-gray-400 mt-1">Upload authorized PDFs, record distribution rights, and manage publication.</p></header>
   <form className="bg-[#111827] border border-gray-800 rounded-2xl p-5 space-y-3" onSubmit={e=>{e.preventDefault();void save();}}>
    <h2 className="text-white font-semibold">{editing?'Edit resource':'Register a resource'}</h2>
    <div className="grid md:grid-cols-2 gap-3">{[['title','Title'],['author','Author'],['provider','Provider'],['license_name','License'],['license_url','License reference URL'],['cover_image','Cover image URL'],['file_url','Existing PDF / file URL'],['external_url','External resource URL'],['subject','Subject'],['category','Category']].map(([key,label])=><label key={key} className="text-sm text-gray-300">{label}<input className={field} required={['title','author','provider'].includes(key)} maxLength={(key.endsWith('url') || key==='cover_image')?500:['title','author'].includes(key)?255:100} value={String(form[key as keyof typeof form])} onChange={e=>setForm({...form,[key]:e.target.value})}/></label>)}</div>

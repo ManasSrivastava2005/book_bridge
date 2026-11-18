@@ -1,3 +1,4 @@
+import '../../styles/library-pages.css';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../../services/api';
@@ -82,11 +83,11 @@ export default function BrowseBooksPage() {
   const shelf = (title: string, items: Book[], caption: string) => items.length > 0 && (
     <section aria-label={title} className="space-y-3">
       <h2 className="text-lg font-bold text-white">{title}</h2>
-      <p className="text-sm text-gray-400">{caption}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-        {items.map(book => <Link key={book.id} to={`/books/${book.id}`} className="flex gap-3 p-3 bg-[#111827]/80 border border-gray-800 rounded-xl hover:border-blue-500/50 min-w-0">
+      <p className="text-sm text-secondary">{caption}</p>
+      <div className="bb-library-shelf">
+        {items.map(book => <Link key={book.id} to={`/books/${book.id}`} className="bb-library-shelf-book">
           <BookCover book={book} className="w-20 h-28 shrink-0" />
-          <div className="min-w-0 self-center"><h3 className="text-sm text-white font-semibold line-clamp-2">{book.title}</h3><p className="text-xs text-gray-400 mt-1">{book.author}</p><p className="text-xs text-blue-400 mt-2">View book →</p></div>
+          <div className="min-w-0 self-center"><h3 className="text-sm text-white font-semibold line-clamp-2">{book.title}</h3><p className="text-xs text-secondary mt-1">{book.author}</p><p className="text-xs text-blue-400 mt-2">View book →</p></div>
         </Link>)}
       </div>
     </section>
@@ -113,28 +114,28 @@ export default function BrowseBooksPage() {
   };
 
   return (
-    <div className="max-w-[1600px] mx-auto space-y-6 pb-12">
+    <div className="bb-library-page">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-6">
+      <div className="bb-library-header">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="bb-title flex items-center gap-3">
             <BookOpen className="w-6 h-6 text-blue-400" /> {reviewMode ? 'Book Reviews' : 'Discover'}
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-secondary text-sm mt-1">
             {reviewMode ? 'Choose a book to read reader reviews or share your own.' : 'Explore your library’s books, find your next subject, and manage your reading.'}
           </p>
         </div>
 
         {/* Search Bar */}
         <div className="relative w-full md:w-96">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary" />
           <input
             type="text"
             aria-label="Search catalog"
             value={searchQuery}
             onChange={(e) => updateFilter('search', e.target.value)}
             placeholder="Search by title, author, or ISBN..."
-            className="w-full bg-[#172033] border border-gray-700/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+            className="bb-field pl-10"
           />
         </div>
       </div>
@@ -165,7 +166,7 @@ export default function BrowseBooksPage() {
       )}
 
       {/* Category Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+      <div className="bb-library-categories">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -173,7 +174,7 @@ export default function BrowseBooksPage() {
             aria-pressed={selectedCategory === cat}
             className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
               selectedCategory === cat
-                ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.4)]'
+                ? 'bg-action text-white'
                 : 'bg-[#172033]/80 text-gray-400 hover:text-white hover:bg-gray-800 border border-gray-800'
             }`}
           >
@@ -182,7 +183,7 @@ export default function BrowseBooksPage() {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300">
+      <div className="bb-library-filters">
         <h2 className="font-semibold text-white mr-auto">All books {!isLoading && !loadError && `(${filteredBooks.length})`}</h2>
         <select aria-label="Library" value={selectedLibrary} onChange={e => updateFilter('library', e.target.value === 'all' ? '' : e.target.value)} className="max-w-full bg-[#172033] border border-gray-700 rounded-lg p-2">
           <option value="all">All libraries</option>{libraries.map(library => <option key={library.id} value={library.id}>{library.name}</option>)}
@@ -194,50 +195,50 @@ export default function BrowseBooksPage() {
 
       {/* Book Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="bb-library-grid">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="h-80 bg-[#111827]/40 rounded-2xl animate-pulse border border-gray-800" />
+            <div key={i} className="h-80 bg-[#111827]/40 rounded-2xl animate-pulse border border-line" />
           ))}
         </div>
       ) : loadError ? null : filteredBooks.length === 0 ? (
         <div className="text-center py-16 bg-[#111827]/40 border border-gray-800/60 rounded-2xl">
           <BookOpen className="w-12 h-12 text-gray-600 mx-auto mb-3" />
           <h3 className="text-lg font-bold text-white">No books found</h3>
-          <p className="text-gray-400 text-sm mt-1">Try adjusting your search query or selected category filter.</p>
+          <p className="text-secondary text-sm mt-1">Try adjusting your search query or selected category filter.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="bb-library-grid">
           {filteredBooks.map((book) => (
             <div
               key={book.id}
               data-book-id={book.id}
-              className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-4 flex flex-col justify-between hover:border-blue-500/40 transition duration-200 group"
+              className="bb-library-book group"
             >
               <div>
                 {/* Book Cover */}
-                <div className="w-full h-56 rounded-xl overflow-hidden bg-gray-900 mb-3.5 relative flex items-center justify-center">
+                <div className="bb-library-cover">
                   <BookCover book={book} className="w-full h-full" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
                   {book.rack && (
-                    <span className="absolute top-2.5 right-2.5 text-[10px] bg-black/70 backdrop-blur-md text-gray-300 border border-gray-700/60 px-2 py-0.5 rounded-md font-medium">
+                    <span className="absolute top-2.5 right-2.5 text-xs bg-black/70 backdrop-blur-md text-gray-300 border border-gray-700/60 px-2 py-0.5 rounded-md font-medium">
                       Rack {book.rack}{book.shelf ? ` · Shelf ${book.shelf}` : ''}
                     </span>
                   )}
                 </div>
 
                 {/* Info */}
-                <h3 className="text-white font-bold text-base line-clamp-1 group-hover:text-blue-400 transition">
+                <h3 className="text-ink font-semibold text-lg leading-snug group-hover:text-blue-300 transition">
                   {book.title}
                 </h3>
-                <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{book.author}</p>
+                <p className="text-sm text-secondary mt-2">{book.author}</p>
 
                 {book.category && (
-                  <span className="inline-block mt-2 text-[10px] px-2 py-0.5 rounded-md bg-blue-900/30 text-blue-300 border border-blue-700/30 font-medium">
+                  <span className="inline-block mt-2 text-xs px-2 py-0.5 rounded-md bg-blue-900/30 text-blue-300 border border-blue-700/30 font-medium">
                     {book.category}
                   </span>
                 )}
 
-                <p className="text-xs text-gray-400 line-clamp-2 mt-2 leading-relaxed">
+                <p className="text-xs text-secondary line-clamp-2 mt-2 leading-relaxed">
                   {book.description || 'No description available.'}
                 </p>
               </div>
@@ -249,16 +250,16 @@ export default function BrowseBooksPage() {
                     book.available_copies > 0 ? 'text-emerald-400' : 'text-red-400'
                   }`}>
                     <span className={`w-1.5 h-1.5 rounded-full ${
-                      book.available_copies > 0 ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'
+                      book.available_copies > 0 ? 'bg-emerald-400' : 'bg-red-400'
                     }`} />
                     {book.available_copies > 0 ? `Available (${book.available_copies})` : 'No copies currently available'}
                   </span>
                   {book.publication_year && (
-                    <span className="text-gray-500 text-[11px]">{book.publication_year}</span>
+                    <span className="text-secondary text-xs">{book.publication_year}</span>
                   )}
                 </div>
 
-                  <p className="text-xs text-gray-400">{book.borrow_count || 0} recorded loans · {book.review_count ? `${book.average_rating}/5 (${book.review_count} reviews)` : 'No ratings yet'} · {book.library_name || 'Library not assigned'}</p>
+                  <p className="text-xs text-secondary">{book.borrow_count || 0} recorded loans · {book.review_count ? `${book.average_rating}/5 (${book.review_count} reviews)` : 'No ratings yet'} · {book.library_name || 'Library not assigned'}</p>
                 <div className="grid grid-cols-2 gap-2 mt-2">
                   <Link
                     to={`/books/${book.id}${reviewMode ? '#review-section' : ''}`}
@@ -273,8 +274,8 @@ export default function BrowseBooksPage() {
                     disabled={pendingBook !== null || !!personalError || loanAction(book, borrows, reservations).disabled}
                     className={`text-xs font-semibold py-2 rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed ${
                       !loanAction(book, borrows, reservations).disabled
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-[0_0_10px_rgba(37,99,235,0.3)]'
-                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                        ? 'bg-action hover:bg-action-hover text-white'
+                        : 'bg-gray-800 text-secondary cursor-not-allowed'
                     }`}
                   >
                     {pendingBook === book.id ? 'Saving…' : loanAction(book, borrows, reservations).label}

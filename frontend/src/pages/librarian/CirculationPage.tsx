@@ -1,3 +1,4 @@
+import '../../styles/staff-workspace.css';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../../services/api';
@@ -6,8 +7,8 @@ import { libraryError } from '../../utils/library';
 
 type StaffReservation=Reservation & {user:User;created_at:string};
 type Data={loans:BorrowRecord[];students:User[];books:Book[];reservations:StaffReservation[];overdue:Set<number>;libraries:Library[]};
-const button='rounded-xl border border-gray-700 bg-[#172033] px-3 py-2 text-sm text-gray-200 hover:bg-gray-700 disabled:opacity-40';
-const field='w-full rounded-xl border border-gray-700 bg-[#172033] p-2 text-sm text-white';
+const button='bb-button bb-button-secondary';
+const field='bb-field';
 export default function CirculationPage(){
  const [params,setParams]=useSearchParams();
  const view=['borrowed','overdue','returned','reservations'].includes(params.get('view') || '')?params.get('view')!:'borrowed';
@@ -66,9 +67,9 @@ export default function CirculationPage(){
   if(kind==='renew'){void act(()=>api.post(`/admin/loans/${id}/renew`,{request_id:confirm.requestId,expected_due_date:confirm.due}),'Loan renewed. Renewal recorded in history.');return;}
   void act(()=>kind==='return'?api.post(`/borrows/${id}/return`):kind==='cancel'?api.delete(`/reservations/${id}`):api.post(`/admin/reservations/${id}/release`),kind==='return'?'Return recorded. Any waiting reservation received the copy.':kind==='cancel'?'Reservation cancelled.':'Held copy released to the next waiting student or available inventory.');
  };
- return <div className="max-w-[1600px] mx-auto space-y-5 pb-10">
-  <header className="rounded-2xl border border-gray-800 bg-[#111827] p-5"><Link to="/admin/dashboard" className="text-cyan-400 text-sm">← Librarian Hub</Link><h1 className="text-2xl text-white font-bold mt-2">Circulation</h1><p className="text-sm text-gray-400 mt-1">Issue books, record returns, and manage waiting and held reservations.</p></header>
-  <form className="rounded-2xl border border-gray-800 bg-[#111827] p-5 space-y-3" onSubmit={e=>{e.preventDefault();setIssueConfirmation(crypto.randomUUID());}}>
+ return <div className="bb-staff-workspace">
+  <header className="bb-staff-page-header"><Link to="/admin/dashboard" className="text-cyan-400 text-sm">← Librarian Hub</Link><h1 className="bb-title mt-2">Circulation</h1><p className="text-sm text-gray-400 mt-1">Issue books, record returns, and manage waiting and held reservations.</p></header>
+  <form className="bb-staff-form" onSubmit={e=>{e.preventDefault();setIssueConfirmation(crypto.randomUUID());}}>
    <h2 className="text-white font-semibold">Issue a book</h2>
    <div className="grid md:grid-cols-2 gap-3">
     <label className="text-sm text-gray-300">Find student<input className={field} value={studentSearch} onChange={e=>setStudentSearch(e.target.value)} placeholder="Name, student ID or email"/></label>
@@ -94,7 +95,7 @@ export default function CirculationPage(){
     const position=r.status==='pending'?data.reservations.filter(x=>x.book_id===r.book_id && x.status==='pending').findIndex(x=>x.id===r.id)+1:null;
     return <article key={r.id} className="rounded-2xl border border-gray-800 bg-[#111827] p-4 flex flex-wrap justify-between gap-3"><div className="min-w-0"><h2 className="text-white font-medium break-words">{r.book?.title || `Book #${r.book_id}`}</h2><p className="text-sm text-gray-400 break-words">{r.user.name} · {r.user.email}</p><p className="text-xs text-cyan-400 mt-1">{r.status==='pending'?`Waiting · Queue position ${position}`:r.status==='ready'?'Ready for pickup':r.status==='fulfilled'?'Fulfilled — issued to student':'Cancelled'}</p></div><div className="flex flex-wrap gap-2 items-center">{r.status==='pending' && <button className={button} disabled={disabled || !r.book?.available_copies || position!==1} onClick={()=>setConfirm({kind:'ready',id:r.id,label:`${r.book?.title} for ${r.user.name}`})}>Mark ready for pickup</button>}{r.status==='pending' && <button className={button} disabled={disabled} onClick={()=>setConfirm({kind:'cancel',id:r.id,label:`${r.book?.title} for ${r.user.name}`})}>Cancel reservation</button>}{r.status==='ready' && <><button className={button} disabled={disabled} onClick={()=>{setStudent(String(r.user_id));setBook(String(r.book_id));setNotice('Reserved student and book selected. Review the Issue a book form to check out.');window.scrollTo({top:0,behavior:'smooth'});}}>Prepare checkout</button><button className={button} disabled={disabled} onClick={()=>setConfirm({kind:'release',id:r.id,label:`${r.book?.title} for ${r.user.name}`})}>Release held copy</button></>}</div></article>;
    })}</div>:<div className="space-y-3">{loans.slice(currentPage*25,currentPage*25+25).map(l=><article key={l.id} className="rounded-2xl border border-gray-800 bg-[#111827] p-4 flex flex-wrap justify-between gap-3"><div className="min-w-0"><h2 className="text-white font-medium break-words">{l.book?.title || `Book #${l.book_id}`}</h2><p className="text-sm text-gray-400 break-words">{l.user?.name} · {l.user?.email}</p><p className={`text-xs mt-1 ${data.overdue.has(l.id)?'text-red-300':'text-gray-400'}`}>{data.overdue.has(l.id)?'Overdue · ':''}Due {new Date(l.due_date).toLocaleString()}{l.returned_at?` · Returned ${new Date(l.returned_at).toLocaleString()}`:''}</p></div><button className={button} disabled={disabled} onClick={()=>void showHistory(l.id)}>Renewal history</button>{l.status==='borrowed' && !data.overdue.has(l.id) && <button className={button} disabled={disabled} onClick={()=>setConfirm({kind:'renew',id:l.id,label:`${l.book?.title} for ${l.user?.name}`,requestId:crypto.randomUUID(),due:l.due_date})}>Renew</button>}{l.status==='borrowed' && <button className={`${button} self-center`} disabled={disabled} onClick={()=>setConfirm({kind:'return',id:l.id,label:`${l.book?.title} from ${l.user?.name}`})}>Record return</button>}</article>)}</div>}
-   {!count && <p className="text-gray-500 py-8 text-center">No records match these filters.</p>}
+   {!count && <p className="text-secondary py-8 text-center">No records match these filters.</p>}
    {count>25 && <div className="flex gap-3 items-center text-sm text-gray-400"><button className={button} disabled={currentPage===0} onClick={()=>setPage(currentPage-1)}>Previous</button>Page {currentPage+1} of {Math.ceil(count/25)}<button className={button} disabled={(currentPage+1)*25>=count} onClick={()=>setPage(currentPage+1)}>Next</button></div>}
   </>}
  </div>;

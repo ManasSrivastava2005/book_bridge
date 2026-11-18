@@ -128,7 +128,7 @@ export default function SettingsPage() {
           <h1 className="text-2xl md:text-3xl font-extrabold text-white mt-2 flex items-center gap-2.5">
             <User className="w-7 h-7 text-blue-400" /> Student Profile & Settings
           </h1>
-          <p className="text-gray-400 text-sm mt-1 max-w-xl">
+          <p className="text-secondary text-sm mt-1 max-w-xl">
             Update your student identity, manage your campus library card, and configure notifications.
           </p>
         </div>
@@ -139,7 +139,7 @@ export default function SettingsPage() {
             <QrCode className="w-7 h-7" />
           </div>
           <div>
-            <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Student ID</span>
+            <span className="text-[10px] text-secondary font-semibold uppercase tracking-wider">Student ID</span>
             <p className="text-xs font-mono font-bold text-white">{studentId || 'Not provided'}</p>
             <span className="text-[10px] text-emerald-400 font-medium">Student profile</span>
           </div>
@@ -196,7 +196,7 @@ export default function SettingsPage() {
 
           <div className="space-y-2 text-center sm:text-left">
             <h3 className="text-sm font-semibold text-white">Upload New Photo</h3>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-secondary">
               Supported formats: JPG, PNG, WebP. Maximum file size: 5MB.
             </p>
             <div className="flex items-center gap-3 pt-1 justify-center sm:justify-start">
@@ -240,7 +240,7 @@ export default function SettingsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Full Name</label>
+              <label className="block text-xs font-semibold text-secondary mb-1.5">Full Name</label>
               <input
                 type="text"
                 value={name}
@@ -251,7 +251,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Institutional Email</label>
+              <label className="block text-xs font-semibold text-secondary mb-1.5">Institutional Email</label>
               <input
                 type="email"
                 value={email}
@@ -261,7 +261,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">University Roll / Student ID</label>
+              <label className="block text-xs font-semibold text-secondary mb-1.5">University Roll / Student ID</label>
               <input
                 type="text"
                 value={studentId}
@@ -272,7 +272,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Department / Major Branch</label>
+              <label className="block text-xs font-semibold text-secondary mb-1.5">Department / Major Branch</label>
               <input
                 type="text"
                 value={branch}
@@ -283,7 +283,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Current Semester</label>
+              <label className="block text-xs font-semibold text-secondary mb-1.5">Current Semester</label>
               <select
                 value={semester}
                 onChange={(e) => setSemester(e.target.value)}
@@ -301,7 +301,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-400 mb-1.5">Assigned Campus Library</label>
+              <label className="block text-xs font-semibold text-secondary mb-1.5">Assigned Campus Library</label>
               <input
                 type="text"
                 value="Central University Library (MAIN)"
@@ -319,10 +319,10 @@ export default function SettingsPage() {
           </h2>
 
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-gray-800">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-line">
               <div>
                 <p className="text-xs font-semibold text-white">Book Due Date Warnings</p>
-                <p className="text-[11px] text-gray-400">Receive alerts 3 days and 24 hours prior to borrow due dates</p>
+                <p className="text-[11px] text-secondary">Receive alerts 3 days and 24 hours prior to borrow due dates</p>
               </div>
               <input
                 type="checkbox"
@@ -332,10 +332,10 @@ export default function SettingsPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-gray-800">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-line">
               <div>
                 <p className="text-xs font-semibold text-white">Reservation Ready Alerts</p>
-                <p className="text-[11px] text-gray-400">Instant notification when a reserved textbook is returned to the desk</p>
+                <p className="text-[11px] text-secondary">Instant notification when a reserved textbook is returned to the desk</p>
               </div>
               <input
                 type="checkbox"
@@ -345,10 +345,10 @@ export default function SettingsPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-gray-800">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-line">
               <div>
                 <p className="text-xs font-semibold text-white">Curated AI Recommendations</p>
-                <p className="text-[11px] text-gray-400">Weekly reading suggestions matching your semester syllabus milestones</p>
+                <p className="text-[11px] text-secondary">Weekly reading suggestions matching your semester syllabus milestones</p>
               </div>
               <input
                 type="checkbox"
@@ -358,10 +358,10 @@ export default function SettingsPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-gray-800">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-[#172033]/60 border border-line">
               <div>
                 <p className="text-xs font-semibold text-white">Reading Streak Daily Check-in</p>
-                <p className="text-[11px] text-gray-400">Daily reminder to maintain your reading streak for XP bonuses</p>
+                <p className="text-[11px] text-secondary">Daily reminder to maintain your reading streak for XP bonuses</p>
               </div>
               <input
                 type="checkbox"

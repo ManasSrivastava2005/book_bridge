@@ -176,7 +176,7 @@ export default function ScanPage() {
           <QrCode className="w-7 h-7" />
         </div>
         <h1 className="text-2xl font-extrabold text-white">Campus Book Scanner & Shelf Locator</h1>
-        <p className="text-xs text-gray-400 mt-1 max-w-md mx-auto">
+        <p className="text-xs text-secondary mt-1 max-w-md mx-auto">
           Scan the QR or Barcode on the spine of any library book to immediately view real-time availability and pinpoint its physical shelf.
         </p>
       </div>
@@ -195,7 +195,7 @@ export default function ScanPage() {
         </div>
 
         {/* Camera Viewport Area */}
-        <div className="w-full min-h-[300px] bg-gray-950 rounded-xl border border-gray-800 relative overflow-hidden flex flex-col items-center justify-center text-center p-4">
+        <div className="w-full min-h-[300px] bg-gray-950 rounded-xl border border-line relative overflow-hidden flex flex-col items-center justify-center text-center p-4">
           {/* 1. Active Camera Video Feed */}
           <video
             ref={videoRef}
@@ -224,7 +224,7 @@ export default function ScanPage() {
                 <Camera className="w-8 h-8" />
               </div>
               <h3 className="text-sm font-bold text-white mb-1">Camera Scanner Ready</h3>
-              <p className="text-xs text-gray-400 mb-4">
+              <p className="text-xs text-secondary mb-4">
                 Click below to grant camera access and activate the optical barcode reader.
               </p>
               <button
@@ -242,7 +242,7 @@ export default function ScanPage() {
             <div className="py-12 flex flex-col items-center">
               <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-3" />
               <p className="text-xs text-blue-300 font-semibold">Requesting camera permissions...</p>
-              <p className="text-[11px] text-gray-400 mt-1">Please confirm access in your browser prompt.</p>
+              <p className="text-[11px] text-secondary mt-1">Please confirm access in your browser prompt.</p>
             </div>
           )}
 
@@ -293,7 +293,7 @@ export default function ScanPage() {
 
         {/* Camera Control Bar (when camera is active) */}
         {cameraState === 'active' && (
-          <div className="flex items-center justify-between bg-[#172033] p-3 rounded-xl border border-gray-800">
+          <div className="flex items-center justify-between bg-[#172033] p-3 rounded-xl border border-line">
             <div className="flex items-center gap-2 text-xs text-emerald-400">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span className="font-semibold">Scanner active — Point at barcode</span>
@@ -349,7 +349,7 @@ export default function ScanPage() {
         {foundBook && (
           <div className="bg-[#172033] border border-blue-500/40 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-[0_0_20px_rgba(59,130,246,0.15)] animate-in fade-in duration-300">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-22 rounded-lg overflow-hidden bg-gray-900 shrink-0 border border-gray-700/50">
+              <div className="w-16 h-22 rounded-lg overflow-hidden bg-surface shrink-0 border border-gray-700/50">
                 <img
                   src={foundBook.cover_image || 'https://images-na.ssl-images-amazon.com/images/I/41xShlnTZTL._SX376_BO1,204,203,200_.jpg'}
                   alt={foundBook.title}
@@ -365,7 +365,7 @@ export default function ScanPage() {
                   <CheckCircle className="w-3.5 h-3.5" /> Book Identified & Located
                 </span>
                 <h3 className="text-sm font-bold text-white mt-0.5">{foundBook.title}</h3>
-                <p className="text-xs text-gray-400">by {foundBook.author}</p>
+                <p className="text-xs text-secondary">by {foundBook.author}</p>
                 <div className="flex flex-wrap items-center gap-2 mt-2">
                   <span className="text-xs bg-blue-900/40 text-blue-300 px-2.5 py-1 rounded font-bold border border-blue-800/40 flex items-center gap-1">
                     <MapPin className="w-3.5 h-3.5 text-blue-400" />

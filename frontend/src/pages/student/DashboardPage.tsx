@@ -1,3 +1,4 @@
+import '../../styles/dashboard.css';
 import StudyRoomsSummary from '../../components/StudyRoomsSummary';
 import StudentProgress from '../../components/StudentProgress';
 import RecommendationsPage from './RecommendationsPage';
@@ -172,15 +173,10 @@ export default function DashboardPage() {
 
   /* ─────────────────────── RENDER ─────────────────────── */
   return (
-    <div className="space-y-5 max-w-[1600px] mx-auto pb-8">
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5">
-
-        {/* ════════════ LEFT / CENTER MAIN AREA (8 cols) ════════════ */}
-        <div className="xl:col-span-8 space-y-5">
-
+    <div className="bb-dashboard">
           {/* ▸ 1. WELCOME BANNER — With Custom Scenic Concept Art Background */}
           <div
-            className="relative rounded-2xl overflow-hidden border border-blue-900/40 min-h-[175px] md:min-h-[195px] flex flex-col justify-center bg-cover bg-right shadow-2xl"
+            className="bb-dashboard-hero"
             style={{
               backgroundImage: 'url(/dashboard-banner.jpg)',
             }}
@@ -190,8 +186,8 @@ export default function DashboardPage() {
             <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[#0a1124]/70 to-transparent pointer-events-none" />
 
             {/* Banner Text Content */}
-            <div className="relative z-10 px-6 md:px-8 py-6 max-w-xl">
-              <h1 className="text-2xl md:text-3xl font-extrabold text-white flex items-center gap-2.5 tracking-tight drop-shadow-md">
+            <div className="relative z-10 px-6 py-10 sm:px-10 sm:py-12 max-w-3xl">
+              <h1 className="text-3xl sm:text-4xl font-semibold text-ink flex flex-wrap items-center gap-3 tracking-tight">
                 {greeting}, {studentName}{' '}
                 <span className="text-2xl drop-shadow">{emoji}</span>
               </h1>
@@ -202,18 +198,18 @@ export default function DashboardPage() {
           </div>
 
           {/* ▸ 2. STAT CARDS — 4-column compact grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="bb-dashboard-stats">
             <ReaderLevelCard />
 
             {/* Reading Streak with dot indicators */}
-            <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-4">
+            <div className="bb-dashboard-panel">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
                   <Flame className="w-5 h-5 text-amber-400 fill-amber-400" />
                 </div>
                 <div>
                   <div className="text-lg font-bold text-white leading-tight">{summary.reading_streak} Days</div>
-                  <span className="text-xs text-gray-400">Reading Streak</span>
+                  <span className="text-xs text-secondary">Reading Streak</span>
                 </div>
               </div>
               <div className="flex items-center gap-1.5 mt-2.5">
@@ -229,33 +225,39 @@ export default function DashboardPage() {
             </div>
 
             {/* Books Read */}
-            <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-4 flex items-center gap-3">
+            <div className="bb-dashboard-panel flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center">
                 <BookOpen className="w-5 h-5 text-blue-400" />
               </div>
               <div>
                 <div className="text-lg font-bold text-white leading-tight">{summary.books_read}</div>
-                <div className="text-xs text-gray-400">Books Read</div>
-                <div className="text-[10px] text-gray-500">This Semester</div>
+                <div className="text-xs text-secondary">Books Read</div>
+                <div className="text-xs text-secondary">This Semester</div>
               </div>
             </div>
 
             {/* Badges Unlocked */}
-            <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-4 flex items-center justify-between">
+            <div className="bb-dashboard-panel flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-yellow-500/20 border border-yellow-500/30 flex items-center justify-center">
                   <Award className="w-5 h-5 text-yellow-400" />
                 </div>
                 <div>
                   <div className="text-lg font-bold text-white leading-tight">{summary.badges_unlocked}</div>
-                  <div className="text-xs text-gray-400">Badges Unlocked</div>
+                  <div className="text-xs text-secondary">Badges Unlocked</div>
                 </div>
               </div>
-              <Link to="/settings" className="text-[11px] text-blue-400 hover:text-blue-300 font-medium flex items-center gap-0.5 shrink-0">
+              <Link to="/settings" className="text-sm text-blue-400 hover:text-blue-300 font-medium flex items-center gap-0.5 shrink-0">
                 View All <ChevronRight className="w-3 h-3" />
               </Link>
             </div>
           </div>
+
+
+      <div className="bb-dashboard-grid">
+
+        {/* ════════════ LEFT / CENTER MAIN AREA (8 cols) ════════════ */}
+        <div className="bb-dashboard-main">
 
           <RecommendationsPage preview />
 
@@ -264,10 +266,10 @@ export default function DashboardPage() {
           {/* ▸ 5. BOTTOM ROW: Recent Activity + Reading Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Recent Activity */}
-            <div className="bg-[#111827]/60 backdrop-blur-md border border-gray-800/60 rounded-2xl p-4">
+            <div className="bb-dashboard-panel">
               <div className="flex items-center gap-2 mb-3">
                 <TrendingUp className="w-4 h-4 text-blue-400" />
-                <h3 className="text-sm font-bold text-white">Recent Activity</h3>
+                <h3 className="text-base font-semibold text-ink">Recent Activity</h3>
               </div>
               <div className="space-y-2.5">
                 {recentActivity.map((act, i) => {
@@ -279,8 +281,8 @@ export default function DashboardPage() {
                         <Icon className="w-3.5 h-3.5" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-gray-200 truncate">{act.description}</p>
-                        <span className="text-[10px] text-gray-500">{act.timestamp}</span>
+                        <p className="text-sm text-ink leading-relaxed">{act.description}</p>
+                        <span className="text-xs text-secondary">{act.timestamp}</span>
                       </div>
                     </div>
                   );
@@ -294,16 +296,16 @@ export default function DashboardPage() {
         </div>
 
         {/* ════════════ RIGHT SIDEBAR (4 cols) ════════════ */}
-        <div className="xl:col-span-4 space-y-5">
+        <div className="bb-dashboard-aside">
 
           {/* ▸ 1. TODAY'S MISSIONS */}
-          <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-4">
+          <div className="bb-dashboard-panel">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Target className="w-5 h-5 text-blue-400" />
-                <h2 className="text-sm font-bold text-white">Today's Missions</h2>
+                <h2 className="text-base font-semibold text-ink">Today's Missions</h2>
               </div>
-              <Link to="/quizzes" className="text-[11px] text-blue-400 hover:text-blue-300 font-medium">
+              <Link to="/quizzes" className="text-sm text-blue-400 hover:text-blue-300 font-medium">
                 View All →
               </Link>
             </div>
@@ -311,7 +313,7 @@ export default function DashboardPage() {
               {missions.map((mission) => (
                 <div
                   key={mission.id}
-                  className="flex items-center justify-between p-2.5 rounded-xl bg-[#172033]/60 border border-gray-800/80 hover:border-gray-700 transition"
+                  className="bb-dashboard-mission"
                 >
                   <div className="flex items-center gap-2.5">
                     <div
@@ -322,7 +324,7 @@ export default function DashboardPage() {
                     >
                       {mission.completed && <CheckCircle2 className="w-3.5 h-3.5" />}
                     </div>
-                    <span className={`text-xs font-medium ${mission.completed ? 'text-gray-300' : 'text-gray-400'}`}>
+                    <span className={`text-xs font-medium ${mission.completed ? 'text-gray-300' : 'text-secondary'}`}>
                       {mission.title}
                     </span>
                   </div>
@@ -333,21 +335,21 @@ export default function DashboardPage() {
           </div>
 
           {/* ▸ 2. AI ASSISTANT WIDGET */}
-          <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-4">
+          <div className="bb-dashboard-panel">
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
                   <Bot className="w-4 h-4 text-blue-400" />
                 </div>
-                <h3 className="text-sm font-bold text-white">AI Assistant</h3>
+                <h3 className="text-base font-semibold text-ink">AI Assistant</h3>
               </div>
-              <span className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 Online
               </span>
             </div>
 
-            <p className="text-[11px] text-gray-400 mt-1 mb-2.5">
+            <p className="text-sm text-secondary mt-1 mb-2.5">
               Ask questions, get summaries, find books and more.
             </p>
 
@@ -362,10 +364,10 @@ export default function DashboardPage() {
                 <button
                   key={idx}
                   onClick={() => handlePromptClick(prompt)}
-                  className="w-full text-left px-2.5 py-1.5 rounded-lg bg-[#172033]/80 hover:bg-blue-900/30 border border-gray-700/40 hover:border-blue-500/40 text-[11px] text-gray-300 hover:text-white transition flex items-center gap-1.5"
+                  className="bb-dashboard-prompt"
                 >
                   <Sparkles className="w-3 h-3 text-blue-400 shrink-0" />
-                  <span className="truncate">{prompt}</span>
+                  <span>{prompt}</span>
                 </button>
               ))}
             </div>
@@ -374,9 +376,9 @@ export default function DashboardPage() {
             {aiResponses.length > 0 && (
               <div className="max-h-36 overflow-y-auto mb-2.5 space-y-1.5 pr-1">
                 {aiResponses.map((res, i) => (
-                  <div key={i} className="text-[11px] space-y-0.5">
+                  <div key={i} className="text-sm space-y-0.5">
                     <p className="text-blue-400 font-medium">Q: {res.query}</p>
-                    <p className="text-gray-300 bg-gray-900/80 p-2 rounded-lg border border-gray-800 text-[10px] leading-relaxed">{res.answer}</p>
+                    <p className="text-gray-300 bg-gray-900/80 p-2 rounded-lg border border-line text-xs leading-relaxed">{res.answer}</p>
                   </div>
                 ))}
               </div>
@@ -388,12 +390,14 @@ export default function DashboardPage() {
                 value={aiInput}
                 onChange={(e) => setAiInput(e.target.value)}
                 placeholder="Type your question..."
-                className="w-full bg-[#172033] border border-gray-700/50 rounded-xl pl-3 pr-9 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                aria-label="Question for the AI Assistant"
+                className="bb-field pr-14"
               />
               <button
                 type="submit"
                 disabled={isAiLoading}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-6 h-6 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center text-white transition disabled:opacity-50"
+                aria-label="Send question"
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 rounded-control bg-action hover:bg-action-hover flex items-center justify-center text-white disabled:opacity-50"
               >
                 {isAiLoading ? (
                   <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -408,16 +412,16 @@ export default function DashboardPage() {
           <BadgeCollection earnedOnly />
 
           {/* ▸ 4. MORE BOOKS PROMO CARD */}
-          <div className="bg-gradient-to-br from-[#122240] to-[#1a1c2e] border border-blue-900/40 rounded-2xl p-4 relative overflow-hidden">
+          <div className="bb-dashboard-panel relative overflow-hidden bg-gradient-to-br from-elevated to-surface">
             <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl" />
             <div className="relative">
-              <h4 className="text-sm font-bold text-white">More books,<br />more perspectives.</h4>
-              <p className="text-[11px] text-blue-200/60 mt-1.5 leading-relaxed">
+              <h4 className="text-base font-semibold text-ink">More books,<br />more perspectives.</h4>
+              <p className="text-sm text-blue-200/60 mt-1.5 leading-relaxed">
                 Keep going, your next favorite book is just a search away.
               </p>
               <Link
                 to="/books"
-                className="mt-3 inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-semibold py-1.5 px-3 rounded-lg transition"
+                className="mt-3 inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-1.5 px-3 rounded-lg transition"
               >
                 Browse Books <ArrowRight className="w-3 h-3" />
               </Link>

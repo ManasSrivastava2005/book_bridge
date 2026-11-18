@@ -1,3 +1,4 @@
+import '../../styles/resource-pages.css';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
@@ -46,34 +47,34 @@ export default function DigitalResourcesPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-[1600px] mx-auto pb-12">
+    <div className="bb-resource-page">
       {/* Top Banner */}
-      <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bb-resource-header">
         <div>
           <span className="px-3 py-0.5 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
             Digital Library & E-Books
           </span>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white mt-2 flex items-center gap-2.5">
+          <h1 className="bb-title flex items-center gap-3 mt-3">
             <Globe className="w-7 h-7 text-cyan-400" /> Curated Digital Library
           </h1>
-          <p className="text-gray-400 text-sm mt-1 max-w-xl">
+          <p className="text-secondary text-sm mt-1 max-w-xl">
             Explore verified open-access textbooks, university curated technical guides, and embedded online reading.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="bg-[#172033] border border-cyan-500/30 rounded-xl px-4 py-2.5 text-center">
-            <span className="text-[10px] text-gray-400 uppercase font-semibold block">Open Access</span>
+            <span className="text-[10px] text-secondary uppercase font-semibold block">Open Access</span>
             <span className="text-lg font-bold text-cyan-400">Staff reviewed</span>
           </div>
         </div>
       </div>
 
       {/* Tabs & Search */}
-      <div className="bg-[#111827]/60 border border-gray-800/60 rounded-2xl p-4 flex flex-col md:flex-row gap-4 justify-between items-center">
+      <div className="bb-resource-toolbar">
         {/* Search */}
         <form onSubmit={handleSearch} className="relative w-full md:max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary" />
           <input
             type="text"
             value={searchQuery}
@@ -114,15 +115,15 @@ export default function DigitalResourcesPage() {
           No digital resources found.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="bb-resource-grid">
           {resources.map((res) => (
             <div
               key={res.id}
-              className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-4 flex flex-col justify-between hover:border-cyan-500/40 transition group"
+              className="bb-resource-card group"
             >
               <div>
                 {/* Cover Image */}
-                <div className="relative w-full h-48 rounded-xl overflow-hidden bg-gray-900 mb-3">
+                <div className="relative w-full h-48 rounded-xl overflow-hidden bg-surface mb-3">
                   <img
                     src={(res.cover_image?.startsWith('/uploads/')?`${api.defaults.baseURL}${res.cover_image}`:res.cover_image) || 'https://images.unsplash.com/photo-1532012164546-f432f2e3d93c?w=400&q=80'}
                     alt={res.title}
@@ -134,12 +135,12 @@ export default function DigitalResourcesPage() {
                   </span>
                 </div>
 
-                <h3 className="text-white font-bold text-sm line-clamp-1 group-hover:text-cyan-400 transition">
+                <h3 className="bb-resource-title">
                   {res.title}
                 </h3>
-                <p className="text-xs text-gray-400 line-clamp-1 mt-0.5">{res.author}</p>
+                <p className="text-xs text-secondary line-clamp-1 mt-0.5">{res.author}</p>
 
-                <p className="text-xs text-gray-400 line-clamp-2 mt-2 leading-relaxed">
+                <p className="text-xs text-secondary line-clamp-2 mt-2 leading-relaxed">
                   {res.description || 'Verified academic resource available for open online reading.'}
                 </p>
 

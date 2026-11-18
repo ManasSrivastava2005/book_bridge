@@ -1,3 +1,4 @@
+import '../../styles/resource-pages.css';
 import { useSearchParams } from 'react-router-dom';
 import ContributionPanel from '../../components/ContributionPanel';
 import React, { useState, useEffect } from 'react';
@@ -231,17 +232,17 @@ export default function NotesPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-[1600px] mx-auto pb-12">
+    <div className="bb-resource-page">
       {/* Top Banner */}
-      <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bb-resource-header">
         <div>
           <span className="px-3 py-0.5 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">
             Academic Resources
           </span>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white mt-2 flex items-center gap-2.5">
+          <h1 className="bb-title flex items-center gap-3 mt-3">
             <FileText className="w-7 h-7 text-blue-400" /> Notes Library & Lecture Summaries
           </h1>
-          <p className="text-gray-400 text-sm mt-1 max-w-xl">
+          <p className="text-secondary text-sm mt-1 max-w-xl">
             Access verified lecture notes, formula sheets, and study materials organized by branch and semester.
           </p>
         </div>
@@ -266,7 +267,7 @@ export default function NotesPage() {
         )}
       </div>
 
-        <details open={searchParams.get("view")==="submissions" || undefined} className="w-full rounded-xl border border-slate-700 p-4"><summary className="cursor-pointer text-sm text-blue-300">Submit to Library — notes and study materials</summary><div className="mt-4"><p className="mb-4 text-sm text-slate-400">Share a contribution with the library after librarian approval. For personal storage visible only to you, use Upload Private Note.</p><ContributionPanel section="notes" /></div></details>
+        <details open={searchParams.get("view")==="submissions" || undefined} className="w-full rounded-xl border border-line-strong p-4"><summary className="cursor-pointer text-sm text-blue-300">Submit to Library — notes and study materials</summary><div className="mt-4"><p className="mb-4 text-sm text-secondary">Share a contribution with the library after librarian approval. For personal storage visible only to you, use Upload Private Note.</p><ContributionPanel section="notes" /></div></details>
 
       {uploadSuccess && (
         <div role="status" className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold flex items-center gap-2">
@@ -285,13 +286,13 @@ export default function NotesPage() {
           aria-pressed={collection === value} className={`px-4 py-2 rounded-xl text-sm ${collection === value ? 'bg-blue-600 text-white' : 'bg-slate-800 text-gray-300'}`}>
           {value === 'library' ? 'Library notes' : 'My notes'}
         </button>)}
-        {collection === 'personal' && <span className="text-xs text-gray-400">Private uploads — only you can download these notes.</span>}
+        {collection === 'personal' && <span className="text-xs text-secondary">Private uploads — only you can download these notes.</span>}
       </div>
       {/* Search and Filters */}
-      <div className="bg-[#111827]/60 border border-gray-800/60 rounded-2xl p-4 flex flex-col md:flex-row gap-4 justify-between items-center">
+      <div className="bb-resource-toolbar">
         {/* Search */}
         <form onSubmit={handleSearch} className="relative w-full md:max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary" />
           <input
             type="text"
             aria-label="Search notes"
@@ -304,7 +305,7 @@ export default function NotesPage() {
 
         {/* Subject and Semester Filters */}
         <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
-          <div className="flex items-center gap-1 text-xs text-gray-400 mr-1">
+          <div className="flex items-center gap-1 text-xs text-secondary mr-1">
             <Filter className="w-3.5 h-3.5" /> Filters:
           </div>
 
@@ -357,11 +358,11 @@ export default function NotesPage() {
           {collection === 'personal' ? 'No personal notes found. Upload Private Note or adjust your filters.' : 'No study notes match the selected filters. Try choosing "All Subjects".'}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="bb-resource-grid">
           {visibleNotes.map((note) => (
             <div
               key={note.id}
-              className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-blue-500/40 transition group"
+              className="bb-resource-card group"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
@@ -373,14 +374,14 @@ export default function NotesPage() {
                   </span>
                 </div>
 
-                <h3 className="text-white font-bold text-sm line-clamp-2 group-hover:text-blue-400 transition">
+                <h3 className="bb-resource-title">
                   {note.title}
                 </h3>
-                <p className="text-xs text-gray-400 line-clamp-3 mt-2 leading-relaxed">
+                <p className="text-xs text-secondary line-clamp-3 mt-2 leading-relaxed">
                   {note.description || note.content || 'No description provided.'}
                 </p>
 
-                <div className="flex items-center gap-3 mt-4 text-[11px] text-gray-400">
+                <div className="flex items-center gap-3 mt-4 text-[11px] text-secondary">
                   <span className="bg-[#172033] px-2 py-0.5 rounded text-gray-300 font-mono">
                     {note.file_type || 'Document'} • {note.file_size || 'Size not available'}
                   </span>
@@ -424,8 +425,8 @@ export default function NotesPage() {
       {/* Preview Modal */}
       {previewNote && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111827] border border-gray-800 rounded-2xl max-w-xl w-full p-6 space-y-4 animate-scaleIn">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-800">
+          <div className="bg-surface border border-line rounded-2xl max-w-xl w-full p-6 space-y-4 animate-scaleIn">
+            <div className="flex items-center justify-between pb-3 border-b border-line">
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-blue-400" />
                 <h3 className="font-bold text-white text-base truncate">{previewNote.title}</h3>
@@ -437,16 +438,16 @@ export default function NotesPage() {
 
             <div className="space-y-3 text-xs">
               <div className="flex items-center gap-2">
-                <span className="text-gray-400">Subject:</span>
+                <span className="text-secondary">Subject:</span>
                 <span className="text-blue-400 font-semibold">{previewNote.subject}</span>
                 <span className="text-gray-600">•</span>
-                <span className="text-gray-400">Semester:</span>
+                <span className="text-secondary">Semester:</span>
                 <span className="text-white font-semibold">Semester {previewNote.semester}</span>
               </div>
 
               <div>
-                <span className="text-gray-400 block mb-1 font-semibold">Overview & Content Description:</span>
-                <p className="text-gray-300 bg-[#172033] p-3 rounded-xl leading-relaxed border border-gray-800">
+                <span className="text-secondary block mb-1 font-semibold">Overview & Content Description:</span>
+                <p className="text-gray-300 bg-[#172033] p-3 rounded-xl leading-relaxed border border-line">
                   {previewNote.description || previewNote.content}
                 </p>
               </div>
@@ -463,7 +464,7 @@ export default function NotesPage() {
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-800">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-line">
               <button
                 onClick={() => setPreviewNote(null)}
                 className="px-4 py-2 text-xs font-semibold text-gray-400 hover:text-white"
@@ -497,8 +498,8 @@ export default function NotesPage() {
       {/* Upload Note Modal */}
       {showUploadModal && (canUpload || personalUpload) && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111827] border border-gray-800 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 animate-scaleIn">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-800">
+          <div className="bg-surface border border-line rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 space-y-4 animate-scaleIn">
+            <div className="flex items-center justify-between pb-3 border-b border-line">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <Upload className="w-5 h-5 text-blue-400" /> {personalUpload ? 'Upload Private Note' : 'Upload Study Material'}
               </h3>
@@ -515,7 +516,7 @@ export default function NotesPage() {
 
             <form onSubmit={handleUploadSubmit} className="space-y-3.5 text-xs">
               <div>
-                <label htmlFor="note-title" className="block text-gray-400 font-semibold mb-1">Document Title *</label>
+                <label htmlFor="note-title" className="block text-secondary font-semibold mb-1">Document Title *</label>
                 <input
                   id="note-title"
                   type="text"
@@ -530,7 +531,7 @@ export default function NotesPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="note-subject" className="block text-gray-400 font-semibold mb-1">Subject *</label>
+                  <label htmlFor="note-subject" className="block text-secondary font-semibold mb-1">Subject *</label>
                   <input
                     id="note-subject"
                     type="text"
@@ -542,7 +543,7 @@ export default function NotesPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="note-semester" className="block text-gray-400 font-semibold mb-1">Semester</label>
+                  <label htmlFor="note-semester" className="block text-secondary font-semibold mb-1">Semester</label>
                   <select
                     id="note-semester"
                     value={newSemester}
@@ -557,7 +558,7 @@ export default function NotesPage() {
               </div>
 
               <div>
-                <label htmlFor="note-description" className="block text-gray-400 font-semibold mb-1">Description / Syllabus Units Covered</label>
+                <label htmlFor="note-description" className="block text-secondary font-semibold mb-1">Description / Syllabus Units Covered</label>
                 <textarea
                   id="note-description"
                   value={newDesc}
@@ -570,7 +571,7 @@ export default function NotesPage() {
 
               {/* Functional File Selector */}
               <div>
-                <label htmlFor="note-file" className="block text-gray-400 font-semibold mb-1">Select Document File *</label>
+                <label htmlFor="note-file" className="block text-secondary font-semibold mb-1">Select Document File *</label>
                 <input
                   id="note-file"
                   type="file"
@@ -586,7 +587,7 @@ export default function NotesPage() {
                       <FileText className="w-5 h-5 text-blue-400 shrink-0" />
                       <div className="min-w-0">
                         <p className="text-white font-medium truncate text-xs">{selectedFile.name}</p>
-                        <p className="text-[10px] text-gray-400">
+                        <p className="text-[10px] text-secondary">
                           {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • {selectedFile.type || 'Document'}
                         </p>
                       </div>
@@ -615,7 +616,7 @@ export default function NotesPage() {
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-800">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-line">
                 <button
                   type="button"
                   disabled={isUploading}

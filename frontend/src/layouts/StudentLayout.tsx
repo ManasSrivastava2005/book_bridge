@@ -144,7 +144,7 @@ export default function StudentLayout() {
 
       {/* ────────────────── EXACT 4TH REFERENCE SIDEBAR ────────────────── */}
       <aside
-        className={`fixed md:relative inset-y-0 left-0 z-50 w-[188px] bg-[#060c1c]/80 backdrop-blur-2xl border-r border-[#15233e]/50 flex flex-col shrink-0 overflow-hidden shadow-2xl transition-transform duration-200 ${
+        className={`fixed md:relative inset-y-0 left-0 z-50 w-52 lg:w-56 bg-sidebar backdrop-blur-2xl border-r border-line flex flex-col shrink-0 overflow-hidden shadow-2xl transition-transform duration-200 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
       >
@@ -159,16 +159,16 @@ export default function StudentLayout() {
         />
 
         {/* Dark Navy Glass Ambient Sheen Layer */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#060c1c]/95 via-[#060c1c]/75 to-[#050a17]/85 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-sidebar via-sidebar/90 to-sidebar/75 pointer-events-none" />
 
         {/* 1. Header: Glowing Logo & Branding */}
-        <div className="relative z-10 px-3.5 pt-5 pb-4 flex items-center gap-2.5">
+        <div className="relative z-10 px-4 pt-6 pb-5 flex items-center gap-2.5">
           <BookBridgeLogo />
           <div className="flex flex-col min-w-0">
-            <h1 className="text-white font-bold text-[14.5px] leading-tight tracking-tight font-sans">
+            <h1 className="text-white font-bold text-base leading-tight tracking-tight font-sans">
               Book Bridge
             </h1>
-            <p className="text-[#8497b0] text-[9.5px] tracking-wide mt-0.5 font-normal">
+            <p className="text-secondary text-[11px] tracking-wide mt-0.5 font-normal">
               Read &nbsp;•&nbsp; Learn &nbsp;•&nbsp; Grow
             </p>
           </div>
@@ -192,17 +192,17 @@ export default function StudentLayout() {
                 to={item.path}
                 aria-current={active ? 'page' : undefined}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[12.5px] font-medium transition-all group ${
+                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-meta font-medium transition-all group ${
                   active
-                    ? 'bg-[#10274f] text-[#60a5fa] border border-[#2563eb]/45 shadow-[0_0_14px_rgba(37,99,235,0.22)]'
-                    : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04]'
+                    ? 'bg-accent/15 text-focus ring-1 ring-inset ring-accent/35'
+                    : 'text-secondary hover:text-white hover:bg-white/[0.04]'
                 }`}
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
                     active
                       ? 'text-[#60a5fa]'
-                      : 'text-[#94a3b8] group-hover:text-white'
+                      : 'text-secondary group-hover:text-white'
                   }`}
                   strokeWidth={1.75}
                 />
@@ -224,17 +224,17 @@ export default function StudentLayout() {
                 key={item.path}
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[12.5px] font-medium transition-all group ${
+                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-meta font-medium transition-all group ${
                   active
-                    ? 'bg-[#10274f] text-[#60a5fa] border border-[#2563eb]/45 shadow-[0_0_14px_rgba(37,99,235,0.22)]'
-                    : 'text-[#94a3b8] hover:text-white hover:bg-white/[0.04]'
+                    ? 'bg-accent/15 text-focus ring-1 ring-inset ring-accent/35'
+                    : 'text-secondary hover:text-white hover:bg-white/[0.04]'
                 }`}
               >
                 <Icon
                   className={`w-4 h-4 shrink-0 transition-colors ${
                     active
                       ? 'text-[#60a5fa]'
-                      : 'text-[#94a3b8] group-hover:text-white'
+                      : 'text-secondary group-hover:text-white'
                   }`}
                   strokeWidth={1.75}
                 />
@@ -257,7 +257,7 @@ export default function StudentLayout() {
                     key={item.path}
                     to={item.path}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[12.5px] font-medium transition-all ${
+                    className={`flex items-center gap-3 px-3 py-2 rounded-xl text-meta font-medium transition-all ${
                       active
                         ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
                         : 'text-gray-400 hover:bg-white/[0.04] hover:text-white'
@@ -285,14 +285,14 @@ export default function StudentLayout() {
       {/* ────────────────── MAIN CONTENT & TOPBAR ────────────────── */}
       <div className="flex-1 flex flex-col min-h-screen min-w-0">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 bg-[#0f1320]/90 backdrop-blur-xl border-b border-gray-800/60 px-4 lg:px-6 py-3">
+        <header className="sticky top-0 z-30 bg-surface/95 backdrop-blur-xl border-b border-line px-4 lg:px-6 py-3">
           <div className="flex items-center gap-4">
             <button aria-label="Open navigation" className="md:hidden text-gray-400 hover:text-white" onClick={() => setSidebarOpen(true)}>
               <Menu className="w-6 h-6" />
             </button>
 
             {/* Search Bar */}
-            <form onSubmit={handleGlobalSearch} className="flex-1 max-w-xl">
+            <form onSubmit={handleGlobalSearch} className="flex-1 min-w-0 max-w-xl">
               <div className="relative">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
@@ -301,7 +301,7 @@ export default function StudentLayout() {
                   value={globalSearch}
                   onChange={(e) => setGlobalSearch(e.target.value)}
                   placeholder="Search books by title, author, or ISBN..."
-                  className="w-full bg-[#172033] border border-gray-700/60 rounded-xl pl-10 pr-12 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
+                  className="w-full bg-elevated border border-line-strong rounded-xl pl-10 pr-12 py-2 text-xs text-white placeholder-secondary focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20"
                 />
                 <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-gray-500 bg-gray-800 px-1.5 py-0.5 rounded border border-gray-700 font-mono">
                   /
@@ -334,7 +334,7 @@ export default function StudentLayout() {
                   )}
                   <div className="hidden md:block text-left">
                     <p className="text-xs text-white font-semibold leading-tight">{user?.name || 'Student'}</p>
-                    <p className="text-[10px] text-gray-400">
+                    <p className="text-[11px] text-secondary">
                       {user?.role === 'student' ? (user.branch ? `Student • ${user.branch.split(' ')[0]}` : 'Student') : user?.role === 'admin' ? 'Administrator' : 'Librarian'}
                     </p>
                   </div>
@@ -342,10 +342,10 @@ export default function StudentLayout() {
                 </button>
 
                 {profileOpen && (
-                  <div className="absolute right-0 mt-2 w-52 bg-[#172033] border border-gray-700/60 rounded-xl shadow-2xl py-1 z-50">
+                  <div className="absolute right-0 mt-2 w-52 bg-elevated border border-line-strong rounded-xl shadow-2xl py-1 z-50">
                     <div className="px-4 py-2 border-b border-gray-800">
                       <p className="text-xs font-bold text-white truncate">{user?.name}</p>
-                      <p className="text-[10px] text-gray-400 truncate">{user?.email}</p>
+                      <p className="text-[11px] text-secondary truncate">{user?.email}</p>
                     </div>
                     <Link
                       to="/settings"
@@ -379,7 +379,7 @@ export default function StudentLayout() {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-y-auto">
+        <main className="flex-1 p-4 sm:p-6 xl:p-8 overflow-y-auto">
           <Outlet />
         </main>
       </div>

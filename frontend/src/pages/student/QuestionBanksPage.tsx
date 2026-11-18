@@ -1,3 +1,4 @@
+import '../../styles/resource-pages.css';
 import ContributionPanel from '../../components/ContributionPanel';
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
@@ -55,36 +56,36 @@ export default function QuestionBanksPage() {
   const examTypes = ['all', 'End-Term', 'Mid-Term', 'Practice Set'];
 
   return (
-    <div className="space-y-6 max-w-[1600px] mx-auto pb-12">
+    <div className="bb-resource-page">
       {downloadError && <p role="alert" className="text-red-300">{downloadError}</p>}
       {/* Top Banner */}
-      <div className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bb-resource-header">
         <div>
           <span className="px-3 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">
             Exam Preparation & PYQs
           </span>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-white mt-2 flex items-center gap-2.5">
+          <h1 className="bb-title flex items-center gap-3 mt-3">
             <FileCheck className="w-7 h-7 text-amber-400" /> Question Banks & Past Examination Papers
           </h1>
-          <p className="text-gray-400 text-sm mt-1 max-w-xl">
+          <p className="text-secondary text-sm mt-1 max-w-xl">
             Prepare for semester examinations with verified previous year question papers, mid-term tests, and solution rubrics.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="bg-[#172033] border border-gray-800 rounded-xl px-4 py-2.5 text-center">
-            <span className="text-[10px] text-gray-400 uppercase font-semibold block">Questions Solved</span>
+          <div className="bg-[#172033] border border-line rounded-xl px-4 py-2.5 text-center">
+            <span className="text-[10px] text-secondary uppercase font-semibold block">Questions Solved</span>
             <span className="text-lg font-bold text-amber-400">100+ PYQs</span>
           </div>
         </div>
       </div>
 
-      <details className="rounded-xl border border-slate-700 p-4"><summary className="cursor-pointer text-sm text-blue-300">Submit to Library — question papers and banks</summary><div className="mt-4"><ContributionPanel section="questions" /></div></details>
+      <details className="rounded-xl border border-line-strong p-4"><summary className="cursor-pointer text-sm text-blue-300">Submit to Library — question papers and banks</summary><div className="mt-4"><ContributionPanel section="questions" /></div></details>
 
       {/* Search and Filters */}
-      <div className="bg-[#111827]/60 border border-gray-800/60 rounded-2xl p-4 flex flex-col md:flex-row gap-4 justify-between items-center">
+      <div className="bb-resource-toolbar">
         <form onSubmit={handleSearch} className="relative w-full md:max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary" />
           <input
             type="text"
             value={searchQuery}
@@ -134,11 +135,11 @@ export default function QuestionBanksPage() {
           No question banks found for the selected criteria.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="bb-resource-grid">
           {questionBanks.map((qb) => (
             <div
               key={qb.id}
-              className="bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/40 transition group"
+              className="bb-resource-card group"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
@@ -150,14 +151,14 @@ export default function QuestionBanksPage() {
                   </span>
                 </div>
 
-                <h3 className="text-white font-bold text-sm line-clamp-2 group-hover:text-amber-400 transition">
+                <h3 className="bb-resource-title">
                   {qb.title}
                 </h3>
-                <p className="text-xs text-gray-400 line-clamp-2 mt-2 leading-relaxed">
+                <p className="text-xs text-secondary line-clamp-2 mt-2 leading-relaxed">
                   {qb.description || 'Verified past question paper with question breakdowns and marking guidelines.'}
                 </p>
 
-                <div className="flex items-center gap-3 mt-4 text-[11px] text-gray-400">
+                <div className="flex items-center gap-3 mt-4 text-[11px] text-secondary">
                   <span className="bg-[#172033] px-2 py-0.5 rounded text-gray-300 font-medium">
                     {qb.subject}
                   </span>
@@ -191,8 +192,8 @@ export default function QuestionBanksPage() {
       {/* Details Modal */}
       {selectedQB && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111827] border border-gray-800 rounded-2xl max-w-lg w-full p-6 space-y-4 animate-scaleIn">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-800">
+          <div className="bg-surface border border-line rounded-2xl max-w-lg w-full p-6 space-y-4 animate-scaleIn">
+            <div className="flex items-center justify-between pb-3 border-b border-line">
               <h3 className="font-bold text-white text-base truncate">{selectedQB.title}</h3>
               <button onClick={() => setSelectedQB(null)} className="text-gray-400 hover:text-white">
                 <X className="w-5 h-5" />
@@ -200,16 +201,16 @@ export default function QuestionBanksPage() {
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="grid grid-cols-2 gap-2 bg-[#172033] p-3 rounded-xl border border-gray-800">
-                <div><span className="text-gray-400">Subject:</span> <span className="text-white font-semibold">{selectedQB.subject}</span></div>
-                <div><span className="text-gray-400">Semester:</span> <span className="text-white font-semibold">Semester {selectedQB.semester}</span></div>
-                <div><span className="text-gray-400">Exam Type:</span> <span className="text-amber-400 font-semibold">{selectedQB.exam_type}</span></div>
-                <div><span className="text-gray-400">Academic Year:</span> <span className="text-white font-semibold">{selectedQB.academic_year}</span></div>
+              <div className="grid grid-cols-2 gap-2 bg-[#172033] p-3 rounded-xl border border-line">
+                <div><span className="text-secondary">Subject:</span> <span className="text-white font-semibold">{selectedQB.subject}</span></div>
+                <div><span className="text-secondary">Semester:</span> <span className="text-white font-semibold">Semester {selectedQB.semester}</span></div>
+                <div><span className="text-secondary">Exam Type:</span> <span className="text-amber-400 font-semibold">{selectedQB.exam_type}</span></div>
+                <div><span className="text-secondary">Academic Year:</span> <span className="text-white font-semibold">{selectedQB.academic_year}</span></div>
               </div>
 
               <div>
-                <span className="text-gray-400 block mb-1 font-semibold">Exam Description & Syllabus Coverage:</span>
-                <p className="text-gray-300 bg-[#172033] p-3 rounded-xl leading-relaxed border border-gray-800">
+                <span className="text-secondary block mb-1 font-semibold">Exam Description & Syllabus Coverage:</span>
+                <p className="text-gray-300 bg-[#172033] p-3 rounded-xl leading-relaxed border border-line">
                   {selectedQB.description}
                 </p>
               </div>
@@ -220,7 +221,7 @@ export default function QuestionBanksPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-800">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-line">
               <button
                 onClick={() => setSelectedQB(null)}
                 className="px-4 py-2 text-xs font-semibold text-gray-400 hover:text-white"

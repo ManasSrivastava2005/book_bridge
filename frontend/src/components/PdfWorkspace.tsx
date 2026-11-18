@@ -12,8 +12,8 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
 const options = { cMapUrl: `${import.meta.env.BASE_URL}pdfjs/cmaps/`, cMapPacked: true, standardFontDataUrl: `${import.meta.env.BASE_URL}pdfjs/standard_fonts/`, wasmUrl: `${import.meta.env.BASE_URL}pdfjs/wasm/`, isEvalSupported: false };
-const button = 'rounded-xl border border-gray-700 bg-[#172033] px-3 py-2 text-sm text-gray-200 hover:bg-gray-700 disabled:opacity-40';
-const input = 'w-full rounded-xl bg-[#172033] border border-gray-700 p-2 text-sm text-white';
+const button = 'bb-button bb-button-secondary';
+const input = 'bb-field';
 
 export default function PdfWorkspace({ url, resourceId, userId, token }: { url: string; resourceId: number; userId: number; token?: string }) {
   const source = useMemo(() => token ? { url, httpHeaders: { Authorization: `Bearer ${token}` } } : url, [url, token]);
@@ -107,10 +107,10 @@ export default function PdfWorkspace({ url, resourceId, userId, token }: { url: 
   };
 
   return <div className="space-y-3">
-    <div className="rounded-2xl border border-gray-800 bg-[#111827] p-4 space-y-3">
+    <div className="bb-panel p-3 sm:p-4 space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <button className={button} aria-label="Previous page" disabled={disabled || data.page <= 1} onClick={() => go(data.page-1)}><ChevronLeft size={18} /></button>
-        <form className="flex items-center gap-2" onSubmit={e => { e.preventDefault(); if (!disabled) go(Number(pageInput)); }}>
+        <form className="flex flex-wrap items-center gap-2" onSubmit={e => { e.preventDefault(); if (!disabled) go(Number(pageInput)); }}>
           <label className="text-sm text-gray-300" htmlFor="pdf-page">Page</label><input id="pdf-page" type="number" min="1" max={pdf?.numPages || 1} value={pageInput} onChange={e => setPageInput(e.target.value)} className={`${input} !w-20`} disabled={disabled} />
           <span className="text-sm text-gray-400">of {pdf?.numPages ?? '—'}</span><button className={button} disabled={disabled}>Go</button>
         </form>

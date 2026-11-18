@@ -170,7 +170,7 @@ export default function BookDetailsPage() {
     return (
       <div className="max-w-4xl mx-auto py-12 text-center">
         <h2 className="text-xl font-bold text-white mb-2">Book unavailable</h2>
-        <p role="alert" className="text-gray-400 mb-4">{loadError || 'This book could not be found.'}</p>
+        <p role="alert" className="text-secondary mb-4">{loadError || 'This book could not be found.'}</p>
         <button onClick={() => id && fetchBookDetails(id)} className="text-blue-400 underline mr-4">Retry</button>
         <Link to="/books" className="text-blue-400 hover:underline">
           Return to Catalog
@@ -305,35 +305,35 @@ export default function BookDetailsPage() {
 
             {/* Shelf / Metadata Pills */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
-              <div className="bg-[#172033] p-3 rounded-xl border border-gray-800">
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+              <div className="bg-[#172033] p-3 rounded-xl border border-line">
+                <span className="text-[11px] text-secondary flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-blue-400" /> Physical Rack
                 </span>
                 <p className="text-sm font-bold text-white mt-0.5">{[book.rack && `Rack ${book.rack}`, book.shelf && `Shelf ${book.shelf}`].filter(Boolean).join(' · ') || 'Not specified'}</p>
               </div>
 
-              <div className="bg-[#172033] p-3 rounded-xl border border-gray-800">
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+              <div className="bg-[#172033] p-3 rounded-xl border border-line">
+                <span className="text-[11px] text-secondary flex items-center gap-1">
                   <Tag className="w-3.5 h-3.5 text-blue-400" /> ISBN
                 </span>
                 <p className="text-xs font-bold text-white mt-1 truncate">{book.isbn || 'N/A'}</p>
               </div>
 
-              <div className="bg-[#172033] p-3 rounded-xl border border-gray-800">
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+              <div className="bg-[#172033] p-3 rounded-xl border border-line">
+                <span className="text-[11px] text-secondary flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5 text-blue-400" /> Year
                 </span>
                 <p className="text-sm font-bold text-white mt-0.5">{book.publication_year ?? 'Not specified'}</p>
               </div>
 
-              <div className="bg-[#172033] p-3 rounded-xl border border-gray-800">
-                <span className="text-[11px] text-gray-400 flex items-center gap-1">
+              <div className="bg-[#172033] p-3 rounded-xl border border-line">
+                <span className="text-[11px] text-secondary flex items-center gap-1">
                   <BookOpen className="w-3.5 h-3.5 text-blue-400" /> Total Stock
                 </span>
                 <p className="text-sm font-bold text-white mt-0.5">{book.total_copies} Copies</p>
               </div>
             </div>
-            <p className="text-sm text-gray-400 mb-4">Library: {library?.name || 'Not specified'}{library?.campus ? ` · ${library.campus}` : ''}</p>
+            <p className="text-sm text-secondary mb-4">Library: {library?.name || 'Not specified'}{library?.campus ? ` · ${library.campus}` : ''}</p>
 
             {/* Description */}
             <div>
@@ -353,7 +353,7 @@ export default function BookDetailsPage() {
           <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-2">
             <MessageSquare className="w-5 h-5 text-blue-400" /> Write a Review
           </h2>
-          <p className="text-xs text-gray-400 mb-4">Help other readers choose their next book. Posting again updates your existing review.</p>
+          <p className="text-xs text-secondary mb-4">Help other readers choose their next book. Posting again updates your existing review.</p>
 
           {reviewFeedback && (
             <div
@@ -420,10 +420,10 @@ export default function BookDetailsPage() {
         <div className="md:col-span-7 bg-[#111827]/80 backdrop-blur-md border border-gray-800/80 rounded-2xl p-6">
           <h2 className="text-lg font-bold text-white mb-4">Student Reviews ({reviews.length})</h2>
 
-          {reviewLoadError ? <p className="text-gray-400 text-sm">Reviews could not be loaded. Please retry above.</p> : reviews.length === 0 ? (
+          {reviewLoadError ? <p className="text-secondary text-sm">Reviews could not be loaded. Please retry above.</p> : reviews.length === 0 ? (
             <div className="text-center py-10">
               <Star className="w-8 h-8 text-gray-600 mx-auto mb-2" />
-              <p className="text-xs text-gray-400">No reviews yet. Be the first to review this book!</p>
+              <p className="text-xs text-secondary">No reviews yet. Be the first to review this book!</p>
             </div>
           ) : (
             <div className="space-y-4 max-h-[420px] overflow-y-auto pr-2">
@@ -447,7 +447,7 @@ export default function BookDetailsPage() {
           )}
         </div>
       </div>
-      {similar.length > 0 && <section aria-label="Similar books"><h2 className="text-lg text-white font-bold mb-4">Similar books</h2><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">{similar.map(item => <Link key={item.id} to={`/books/${item.id}`} className="bg-[#111827]/80 border border-gray-800 rounded-xl p-4 hover:border-blue-500/40"><BookCover book={item} className="h-44 mb-3" /><h3 className="text-white text-sm font-semibold">{item.title}</h3><p className="text-xs text-gray-400 mt-1">{item.author}</p></Link>)}</div></section>}
+      {similar.length > 0 && <section aria-label="Similar books"><h2 className="text-lg text-white font-bold mb-4">Similar books</h2><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">{similar.map(item => <Link key={item.id} to={`/books/${item.id}`} className="bg-[#111827]/80 border border-line rounded-xl p-4 hover:border-blue-500/40"><BookCover book={item} className="h-44 mb-3" /><h3 className="text-white text-sm font-semibold">{item.title}</h3><p className="text-xs text-secondary mt-1">{item.author}</p></Link>)}</div></section>}
     </div>
   );
 }

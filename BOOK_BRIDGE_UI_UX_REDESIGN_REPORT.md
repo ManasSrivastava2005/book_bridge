@@ -1,12 +1,22 @@
 # Book Bridge UI/UX Redesign — Progress Report
 
-Updated: 5 October 2026.
+Updated: 4 November 2026.
 
-## Status
+## Current status — reopened 12 November 2026
 
-**Phase 1 (design foundation): accepted by the user. Application TypeScript, production build and source-preservation checks pass. Authenticated visual acceptance is pending. Phase 2 has not started.**
+The redesign is incomplete. The previous statement that six phases were complete overstated the result: most page changes standardized classes rather than delivering the requested visual hierarchy and page composition. Historical verification notes below are retained as prior evidence, not current visual acceptance.
 
-This is a progress report, not a declaration that the entire redesign is complete. Phases 2–6 (shared shell, student pages, staff pages, responsive refinement and accessibility review) remain. Existing public pages were checked for regressions; their individual page redesigns have not started.
+### First substantive dashboard pass
+
+- Student dashboard greeting and reading statistics now span the page above a main-content/supporting-content layout.
+- Increased readable typography, section spacing and panel padding; simplified mission rows and AI prompt choices to reduce nested boxes.
+- Added scoped responsive styles for desktop, tablet and mobile; removed continuous animation from the existing assistant status dot.
+- Preserved existing API calls, handlers, conditions, content, routes and shared component instances. No backend or database files changed in this pass.
+- Modified `frontend/src/pages/student/DashboardPage.tsx`; added `frontend/src/styles/dashboard.css`.
+- TypeScript and production build passed on 12 November. Existing bundle-size warning remains.
+- Authenticated screenshot review and viewport acceptance remain pending. Other student and staff pages still need substantive design work. Do not mark the overall redesign complete.
+
+NO PRODUCT FEATURES OR BUSINESS LOGIC WERE INTENTIONALLY CHANGED DURING THIS UI/UX REDESIGN.
 
 ## 1. Design tokens implemented
 
@@ -218,3 +228,101 @@ The viewport capability now correctly applies to this single tab: requested 390 
 The preservation check passes again: 232 original files present, 225 unchanged, and only the seven accepted Phase 1 files modified. Routes, both layouts, authentication and snapshotted backend/migration files remain unchanged. No product code was edited during this continuation. The previous passing TypeScript and build results remain applicable to the unchanged source.
 
 Remaining prerequisite: authenticated student dashboard and Discover checks at 390, 768, 1024 and 1440px. Staff baseline checks remain recorded above. Phase 2 is not started because the user explicitly made authenticated verification a prerequisite. After that gate passes, implement the approved shell-only changes, rerun TypeScript/build and verify both authenticated portals again before stopping for Phase 3 approval.
+
+### Continuation checkpoint — 30 October 2026
+
+The new continuation instructions authorize sequential Phases 2–6 after each required check passes, superseding the earlier stop-after-Phase-2 instruction. Phase 1 remains accepted and unchanged. The source-preservation check passed during the resumption audit (232 original files present; the seven accepted Phase 1 modifications only).
+
+No authenticated student session was available: the in-app browser had no tabs, and the review browser session had no pages. Existing local database, frontend and backend services were restored. A fresh in-app `/dashboard` request redirected to `/login`; the student login tab is retained for user sign-in. AUTHENTICATED STUDENT SESSION REQUIRED. Student Dashboard and Discover checks at 390/768/1024/1440 remain the prerequisite before Phase 2 edits. No application source or authentication behavior was modified.
+
+### 3 November 2026 — Phase 2 shared shell implemented; acceptance pending
+
+Verified the authenticated student Dashboard and Discover before and after the layout edits at measured widths of 390, 768, 1024 and 1440px. No measured header or main action extended beyond the right viewport edge. The baseline rendered 16 sidebar links. Earlier search, menu and keyboard results are recorded above; geometry checks alone do not prove all actions work.
+
+Changed presentation classes in StudentLayout.tsx and StaffLayout.tsx: student sidebar width, brand/navigation typography, active states, header/search surfaces and content gutters; staff navigation density, surface colours, selection and page spacing. No route definitions, navigation configuration, authentication, API or backend changes. Application TypeScript and production build passed; the existing bundle-size warning remains.
+
+Post-change authenticated staff verification is outstanding: opening /admin/dashboard in the second tab redirected to /librarian/login. Verify staff Dashboard, Books and navigation at the four widths before proceeding to Phase 3.
+
+Authenticated staff recheck: restored local services after the staff form displayed Network Error. The existing staff login succeeded. Dashboard and Book Inventory Management rendered at 390, 768, 1024 and 1440px without document-level horizontal overflow. Verified Dashboard-to-Books and return navigation, mobile drawer opening and keyboard focus with a solid outline on Digital Library Management. These checks did not submit any inventory actions.
+
+### Phase 3 — student visual consistency, first pass
+Applied the shared page title, text, surface, button and border styles across 18 student page files. TypeScript and the production build passed. The existing bundle size warning remains. Student dashboard navigation from a separate tab returned the student login form. Authenticated visual review and page-specific refinements remain pending.
+
+Authenticated Phase 3 width check: visited all 23 distinct destinations linked from the signed-in Dashboard, including the 16 sidebar links, Notifications, Achievements, four book detail pages and a joined study room. At 390, 768, 1024 and 1440px, no measured button, input, select, textarea or link inside main extended past the right viewport edge. This measurement does not cover every modal, reader state or action. Restored the student dashboard and default browser size.
+
+4 November: PDF workspace toolbar controls now use shared button and field styles; page navigation can wrap on narrow screens. Curriculum subject cards and the deletion prompt use the shared surface and danger colors. TypeScript and production build passed. Interactive reader and curriculum dialog verification remains pending.
+
+Phase 3 reader and dialog verification: opened the published dsa resource at its saved page 24 of 40. All measured reader inputs, selects and buttons fit within 390, 768, 1024 and 1440px. In My Curriculum, Tab reached Cancel with a solid focus outline and Enter dismissed the deletion prompt. No deletion submitted.
+Phase 4 staff presentation pass: updated existing heading and control classes across 14 librarian page files. TypeScript and production build passed with the existing chunk size warning. Authenticated review of the revised staff pages is pending; the separate staff tab redirected to staff sign-in.
+
+Authenticated staff review: all 12 staff sidebar pages rendered at 390, 768, 1024 and 1440px without measured page overflow or controls extending beyond the right edge. All 16 student sidebar pages also passed at 360 and 1920px. The staff browser reported 320px during the two additional size checks, so 360 and 1920px staff results remain unverified.
+Accessibility: the student dashboard AI question field and send button now have accessible names and the button has a larger touch target. Tab moved from the field to Send question with a visible outline. TypeScript and the production build passed after the edit. Final responsive acceptance is pending.
+
+Staff sign-in recovery and final responsive check: the frontend and API were offline. Restarted PostgreSQL, then started the API after the database accepted connections. Retried the existing staff login successfully and verified Librarian Management Hub. Dashboard and Circulation both measured 360 and 1920 CSS pixels; neither page exceeded the viewport and no measured main control extended beyond its right edge. This completes the representative staff width check. The extended all-pages sweep at those two sizes was interrupted during navigation; it is not reported as passing. Normal browser size restored.
+
+## Final file inventory
+
+Original files with changed hashes in the recovery manifest:
+
+- frontend/src/index.css
+- frontend/src/components/BookCover.tsx
+- frontend/src/components/PdfWorkspace.tsx
+- frontend/src/components/ReaderLevelCard.tsx
+- frontend/src/components/StudentProgress.tsx
+- frontend/src/components/StudyRoomsSummary.tsx
+- frontend/src/components/XPHistory.tsx
+- frontend/src/layouts/StaffLayout.tsx
+- frontend/src/layouts/StudentLayout.tsx
+- frontend/src/pages/librarian/AnalyticsPage.tsx
+- frontend/src/pages/librarian/AnnouncementsPage.tsx
+- frontend/src/pages/librarian/BookManagementPage.tsx
+- frontend/src/pages/librarian/CirculationPage.tsx
+- frontend/src/pages/librarian/ContributionsPage.tsx
+- frontend/src/pages/librarian/CurriculumPage.tsx
+- frontend/src/pages/librarian/DigitalResourceManagementPage.tsx
+- frontend/src/pages/librarian/LibrarianDashboardPage.tsx
+- frontend/src/pages/librarian/QRManagementPage.tsx
+- frontend/src/pages/librarian/QuizManagementPage.tsx
+- frontend/src/pages/librarian/StaffProfilePage.tsx
+- frontend/src/pages/librarian/StaffUsersPage.tsx
+- frontend/src/pages/librarian/StudentDataPage.tsx
+- frontend/src/pages/librarian/StudyModerationPage.tsx
+- frontend/src/pages/student/AcademicPlanPage.tsx
+- frontend/src/pages/student/AIAssistantPage.tsx
+- frontend/src/pages/student/BookDetailsPage.tsx
+- frontend/src/pages/student/BrowseBooksPage.tsx
+- frontend/src/pages/student/CurriculumPage.tsx
+- frontend/src/pages/student/DashboardPage.tsx
+- frontend/src/pages/student/DigitalResourcesPage.tsx
+- frontend/src/pages/student/LeaderboardPage.tsx
+- frontend/src/pages/student/LearningPathPage.tsx
+- frontend/src/pages/student/MyBooksPage.tsx
+- frontend/src/pages/student/NotesPage.tsx
+- frontend/src/pages/student/NotificationsPage.tsx
+- frontend/src/pages/student/QuestionBanksPage.tsx
+- frontend/src/pages/student/QuizzesPage.tsx
+- frontend/src/pages/student/RecommendationsPage.tsx
+- frontend/src/pages/student/ScanPage.tsx
+- frontend/src/pages/student/SettingsPage.tsx
+- frontend/src/pages/student/StudyTogetherPage.tsx
+- frontend/tailwind.config.js
+
+The new design tokens and supporting recovery artifacts are listed in section 7.
+
+## 12 November continuation — recommendations and learning path
+
+Updated RecommendationsPage.tsx and LearningPathPage.tsx with scoped learning-content.css. Recommendations now have prominent book titles, distinct score and metadata styling, readable reasons and aligned existing links. Learning Path now uses a connected timeline, status labels and wrapping resource links. Existing data, conditions, requests, resource order and destinations remain unchanged.
+
+Validation: TypeScript and production build passed; existing large-bundle warning remains. Authenticated dashboard screenshots were inspected at desktop and mobile before this continuation's component updates. DOM/layout checks after updates found no document overflow on Dashboard and Recommendations at 390, 768, 1024 and 1440 pixels. Learning Path was checked at 390 and 1440 pixels with a real topic and resource links. Final screenshot capture failed repeatedly, so visual acceptance of the updated recommendation cards and timeline remains pending. No backend or migration differences were present in Git. Other pages remain unfinished.
+
+## 13 November — catalog, staff operations and resource libraries
+
+Implemented presentation changes in BrowseBooksPage and MyBooksPage using library-pages.css: open page headers, wrapping filters, responsive book shelves/cards, larger titles and clearer loan/history details. Catalog search was verified with Clean Code; returned history displayed all four real records. Mobile screenshots of Discover and returned history were inspected. Catalog geometry passed at actual 390, 1024 and 1440 pixels; the attempted 768 catalog check returned 390 and is not counted. History geometry passed at 390 and 768. Other loan states remain unverified with populated data.
+
+Implemented staff-workspace.css on LibrarianDashboardPage, BookManagementPage, CirculationPage and StudentDataPage: unboxed headers, joined metric grid, grouped forms/filters and compact operational records. Staff authenticated visual acceptance remains pending.
+
+Implemented resource-pages.css on NotesPage, QuestionBanksPage and DigitalResourcesPage: open responsive headers, shared filter toolbar treatment, readable titles, resource grids and larger existing action targets. Upload/download handlers and conditions remain untouched. Authenticated resource-page visual checks remain pending because the accessible browser is signed out.
+
+TypeScript and production builds passed after both groups. Syntax-tree comparisons against per-page backups passed after excluding only className attributes and CSS imports. No app/ or migration changes appear in Git. The existing bundle-size warning remains. This is partial progress, not overall redesign completion.
+
+FUNCTIONAL ISSUE DISCOVERED: QuestionBanksPage contains the existing hard-coded '100+ PYQs' / 'Questions Solved' display. No supporting calculation is present in that display. This predates these UI edits and was left unchanged under the feature freeze; it may mislead readers and needs separate review.
